@@ -1,151 +1,131 @@
--- TRIGGER 1: validar que el vehículo esté disponible antes de crear un alquiler
+-- PROCEDIMIENTO obtener_estado_pedidos
 DELIMITER //
-CREATE TRIGGER before_alquiler_check BEFORE INSERT ON Alquiler FOR EACH ROW
+CREATE PROCEDURE obtener_estado_pedidos(IN p_estado VARCHAR(20))
 BEGIN
-    DECLARE estado_v VARCHAR(20);
-    SELECT estado INTO estado_v FROM Vehiculo WHERE matricula = NEW.matricula;
-    IF estado_v IS NULL THEN
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Vehículo no existe';
-    ELSEIF estado_v != 'disponible' THEN
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Vehículo no disponible';
+    IF p_estado NOT IN ('Entregado','Pendiente','Rechazado') THEN
+    SELECT 'El estado solo puede ser: Entregado, Pendiente o Rechazado';
+    ELSE  TRUNCATE TABLE estados_pedidos;
+        INSERT INTO estados_pedidos(codigo_pedido, fecha_pedido, estado, codigo_cliente)
+        SELECT codigo_pedido, fecha_pedido, estado, codigo_cliente FROM pedido WHERE estado = p_estado;
     END IF;
 END //
 DELIMITER ;
 
--- TRIGGER 2: actualizar el estado del vehículo cuando se crea un alquiler
+-- PROCEDIMIENTO calcular_pares_impares
 DELIMITER //
-CREATE TRIGGER after_alquiler_insert AFTER INSERT ON Alquiler FOR EACH ROW
+CREATE PROCEDURE calcular_pares_impares(IN tope INT)
 BEGIN
-    UPDATE Vehiculo
-    SET estado = 'alquilado'
-    WHERE matricula = NEW.matricula;
+    DECLARE numero INT;
+    TRUNCATE TABLE pares;
+    TRUNCATE TABLE impares;
+    IF tope <= 0 THEN
+        SELECT 'Entrada negativa o cero';
+    ELSE
+        SET numero = tope;
+        WHILE numero > 0 DO
+            IF MOD(numero,2) = 0 THEN
+                INSERT INTO pares VALUES(numero);
+            ELSE
+                INSERT INTO impares VALUES(numero);
+            END IF;
+            SET numero = numero - 1;
+        END WHILE;
+    END IF;
 END //
 DELIMITER ;
 
--- FUNCIÓN 1: total gastado por un cliente
+-- FUNCIÓN mes_en_letras
 DELIMITER //
-CREATE FUNCTION TotalGastadoCliente(p_dni VARCHAR(9)) RETURNS DECIMAL(10,2)
-DETERMINISTIC
+CREATE FUNCTION mes_en_letras(mes INT) RETURNS VARCHAR(10)
 BEGIN
-    DECLARE total DECIMAL(10,2);
-    SELECT IFNULL(SUM(precio_total), 0) INTO total
-    FROM Alquiler
-    WHERE id_cliente = p_dni;
-    RETURN total;
+    IF mes < 1 OR mes > 12 THEN RETURN 'Error en parametro';
+    END IF;
+    CASE mes
+        WHEN 1 THEN RETURN 'Enero';
+        WHEN 2 THEN RETURN 'Febrero';
+        WHEN 3 THEN RETURN 'Marzo';
+        WHEN 4 THEN RETURN 'Abril';
+        WHEN 5 THEN RETURN 'Mayo';
+        WHEN 6 THEN RETURN 'Junio';
+        WHEN 7 THEN RETURN 'Julio';
+        WHEN 8 THEN RETURN 'Agosto';
+        WHEN 9 THEN RETURN 'Septiembre';
+        WHEN 10 THEN RETURN 'Octubre';
+        WHEN 11 THEN RETURN 'Noviembre';
+        WHEN 12 THEN RETURN 'Diciembre';
+    END CASE;
 END //
 DELIMITER ;
 
--- FUNCIÓN 2: número de alquileres de un vehículo
+-- FUNCIÓN esBisiesto
 DELIMITER //
-CREATE FUNCTION ConteoAlquileresVehiculo(p_matricula VARCHAR(20)) RETURNS INT
-DETERMINISTIC
+CREATE FUNCTION esBisiesto(anno INT)
+RETURNS BOOLEAN
+BEGIN
+    DECLARE b BOOLEAN DEFAULT FALSE;
+    IF anno <= 0 THEN RETURN FALSE;
+    END IF;
+    IF MOD(anno,4)=0 THEN
+        SET b = TRUE;
+        IF MOD(anno,100)=0 THEN SET b = FALSE;
+            IF MOD(anno,400)=0 THEN SET b = TRUE;
+            END IF;
+        END IF;
+    END IF;
+    RETURN b;
+END //
+DELIMITER ;
+
+-- FUNCIÓN estado_pedido
+DELIMITER //
+CREATE FUNCTION estado_pedido(p_id INT)
+RETURNS VARCHAR(128)
+BEGIN
+    DECLARE fp DATE;
+    DECLARE fen DATE;
+    DECLARE fes DATE;
+    DECLARE existe INT;
+    SELECT COUNT(*) INTO existe FROM pedido WHERE codigo_pedido = p_id;
+    IF existe = 0 THEN RETURN 'El pedido no existe';
+    END IF;
+    SELECT fecha_pedido, fecha_entrega, fecha_esperada  INTO fp, fen, fes FROM pedido WHERE codigo_pedido = p_id;
+    IF fen IS NULL THEN RETURN 'Pedido no entregado';
+    END IF;
+    IF fen > fes THEN RETURN CONCAT('Entregada con ', DATEDIFF(fen,fes), ' días de retraso');
+    ELSEIF fen = fes THEN RETURN 'Entregada con puntualidad';
+    ELSE RETURN CONCAT('Entregada con ', DATEDIFF(fes,fen), ' días de adelanto');
+    END IF;
+END //
+DELIMITER ;
+
+-- FUNCIÓN numero_pedidos
+DELIMITER //
+CREATE FUNCTION numero_pedidos(mm INT, aaaa INT)
+RETURNS INT
 BEGIN
     DECLARE total INT;
-    SELECT COUNT(*) INTO total
-    FROM Alquiler
-    WHERE matricula = p_matricula;
+    IF mm NOT BETWEEN 1 AND 12 OR aaaa NOT BETWEEN 1900 AND 2099 THEN RETURN -1;
+    END IF;
+    SELECT COUNT(*) INTO total FROM pedido WHERE MONTH(fecha_pedido)=mm AND YEAR(fecha_pedido)=aaaa;
     RETURN total;
 END //
 DELIMITER ;
 
--- CREAR TABLA PARA CURSORS Y AVISOS
-CREATE TABLE AvisosAlquiler (
-    id_aviso INT AUTO_INCREMENT PRIMARY KEY,
-    id_alquiler INT,
-    mensaje VARCHAR(255),
-    fecha_aviso TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- CURSOR 1: alerta de alquileres activos por dias
+-- TRIGGER pago_cliente
 DELIMITER //
-CREATE PROCEDURE AlertarAlquileresLargos()
+CREATE TRIGGER pago_cliente AFTER INSERT ON pago
+FOR EACH ROW
 BEGIN
-    DECLARE done INT DEFAULT FALSE;
-    DECLARE v_id INT;
-    DECLARE v_fecha DATE;
-    DECLARE v_dias INT;
-    DECLARE cur CURSOR FOR
-        SELECT id_alquiler, fecha_inicio
-        FROM Alquiler
-        WHERE estado_contrato = 'activo';
-    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
-
-    OPEN cur;
-    read_loop: LOOP
-        FETCH cur INTO v_id, v_fecha;
-        IF done THEN
-            LEAVE read_loop;
-        END IF;
-        SET v_dias = DATEDIFF(CURDATE(), v_fecha);
-        IF v_dias > 30 THEN
-            INSERT INTO AvisosAlquiler(id_alquiler, mensaje)
-            VALUES(v_id, CONCAT('Alquiler activo por ', v_dias, ' días'));
-        END IF;
-    END LOOP;
-    CLOSE cur;
+    INSERT INTO pago(codigo_cliente, accion, fecha_accion) VALUES(NEW.codigo_cliente, 'INSERT', NOW());
 END //
 DELIMITER ;
 
--- CURSOR 2: listar clientes con un alquiler activo
+-- TRIGGER estado_pedido
 DELIMITER //
-CREATE PROCEDURE ListarClientesAlquilerActivo()
+CREATE TRIGGER estado_pedido BEFORE UPDATE ON pedido
+FOR EACH ROW
 BEGIN
-    DECLARE done INT DEFAULT FALSE;
-    DECLARE v_dni VARCHAR(9);
-    DECLARE v_nombre VARCHAR(100);
-    DECLARE cur CURSOR FOR
-        SELECT c.dni, c.nombre
-        FROM Cliente c
-        JOIN Alquiler a ON c.dni = a.id_cliente
-        WHERE a.estado_contrato = 'activo'
-        GROUP BY c.dni, c.nombre;
-    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
-
-    OPEN cur;
-    read_loop: LOOP
-        FETCH cur INTO v_dni, v_nombre;
-        IF done THEN
-            LEAVE read_loop;
-        END IF;
-        INSERT INTO AvisosAlquiler(id_alquiler, mensaje)
-        VALUES(0, CONCAT('Cliente activo: ', v_nombre, ' (', v_dni, ')'));
-    END LOOP;
-    CLOSE cur;
-END //
-DELIMITER ;
-
--- PROCEDIMIENTO 1: registrar devolución de un alquiler y actualizar vehículo
-DELIMITER //
-CREATE PROCEDURE RegistrarDevolucion(
-    IN p_id_alquiler INT,
-    IN p_fecha_real DATE,
-    IN p_precio_final DECIMAL(10,2)
-)
-BEGIN
-    UPDATE Alquiler
-    SET fecha_real = p_fecha_real,
-        precio_total = p_precio_final,
-        estado_contrato = 'finalizado'
-    WHERE id_alquiler = p_id_alquiler;
-
-    UPDATE Vehiculo v
-    JOIN Alquiler a ON a.matricula = v.matricula
-    SET v.estado = 'disponible'
-    WHERE a.id_alquiler = p_id_alquiler;
-END //
-DELIMITER ;
-
--- PROCEDIMIENTO 2: cambiar categoría y precio base de un vehículo
-DELIMITER //
-CREATE PROCEDURE CambiarCategoriaVehiculo(
-    IN p_matricula VARCHAR(20),
-    IN p_nueva_categoria INT,
-    IN p_nuevo_precio_base DECIMAL(10,2)
-)
-BEGIN
-    UPDATE Vehiculo
-    SET id_categoria = p_nueva_categoria,
-        precio_base = p_nuevo_precio_base
-    WHERE matricula = p_matricula;
+    IF NEW.fecha_entrega IS NOT NULL THEN SET NEW.estado = 'Entregado';
+    END IF;
 END //
 DELIMITER ;
