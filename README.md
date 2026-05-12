@@ -13,4 +13,3 @@ Aplicación Java para gestionar alquileres de vehículos, clientes, empleados y 
 - `ConexionBD.java`: Conexión a base de datos
 - `DAO/`: Clases de métodos 
 - `DTO/`: Clases de datos
-- `PROCEDIMIENTOS_PFINAL.sql`: Scripts SQL con triggers, funciones y procedimientos
