@@ -3,7 +3,7 @@
 ## Descripción
 Aplicación para la gestión de una empresa de alquiler de vehículos. Permite administrar clientes, vehículos, categorías, empleados y contratos de alquiler, con cálculo automático de precios e interfaz por consola.
 
-Requisitos funcionales del sistema
+# Requisitos funcionales del sistema
 - Gestión de clientes
 - Gestión de vehículos -> implementa Comparable<Vehiculo> y la interfaz Alquilable
 - Gestión de categorías de vehículos
