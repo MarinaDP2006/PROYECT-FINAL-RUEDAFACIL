@@ -129,3 +129,28 @@ BEGIN
     END IF;
 END //
 DELIMITER ;
+
+-- CURSOR listar_vehiculos_alquilados
+DELIMITER //
+CREATE PROCEDURE listar_vehiculos_alquilados()
+BEGIN
+    DECLARE v_matricula VARCHAR(10);
+    DECLARE v_marca VARCHAR(50);
+    DECLARE v_modelo VARCHAR(50);    
+    DECLARE fin_cursor INT DEFAULT 0;
+        -- Selecciona vehículos cuyo estado sea 'alquilado'
+    DECLARE cur_vehiculos CURSOR FOR
+        SELECT matricula, marca, modelo FROM Vehiculo  WHERE estado = 'alquilado';    
+    -- Manejador para cuando no haya más filas
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET fin_cursor = 1;     
+    OPEN cur_vehiculos;    
+    bucle: LOOP
+        FETCH cur_vehiculos INTO v_matricula, v_marca, v_modelo;        
+        IF fin_cursor = 1 THEN LEAVE bucle;
+        END IF;        
+SELECT CONCAT('Vehículo alquilado: ', v_matricula, ' - ', v_marca, ' ', v_modelo) AS Informacion;
+        END LOOP bucle;    
+    CLOSE cur_vehiculos;
+END //
+DELIMITER ;
+
