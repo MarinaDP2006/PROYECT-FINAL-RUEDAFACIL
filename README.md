@@ -5,12 +5,12 @@ Aplicación para la gestión de una empresa de alquiler de vehículos. Permite a
 
 ## Requisitos funcionales del sistema
 - Gestión de clientes
-- Gestión de vehículos -> implementa Comparable<Vehiculo> y la interfaz Alquilable
+- Gestión de vehículos
 - Gestión de categorías de vehículos
 - Gestión de empleados
-- Gestión de alquileres: registro de un nuevo alquiler (asociando cliente, vehículo y empleado), registro de devolución, cancelación de alquiler y cálculo automático del precio total.
-- Cálculo de precios por interfaz Alquilable
-- Consultas para filtrar vehículos disponibles por categoría, obtener historial de alquileres de un cliente, ordenar vehículos por precio o por marca/modelo.
+- Gestión de alquileres
+- Cálculo de precios
+- Consultas
 
 ## ¿Qué se ha usado?
 - Java
