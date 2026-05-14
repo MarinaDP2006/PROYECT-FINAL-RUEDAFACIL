@@ -1,31 +1,23 @@
 package DTO;
 
 public class VElectrico extends Vehiculo implements Alquilable {
-    private int autonomiaBateria;
+	private int autonomia;
 
-    public VElectrico(String matricula, String marca, String modelo, int añoFabricacion, String combustible, int plazas, double precioDia, String estado, int idCategoria, int autonomiaBateria) {
-        super(matricula, marca, modelo, añoFabricacion, combustible, plazas, precioDia, estado, idCategoria);
-        this.autonomiaBateria = autonomiaBateria;
-    }
+	public VElectrico(String matricula, String marca, String modelo, int añoFabricacion, int combustible, int plazas, double precioDia, String estado, int idCategoria, int autonomia) {
+		super(matricula, marca, modelo, añoFabricacion, combustible, plazas, precioDia, estado, idCategoria);
+		this.autonomia = autonomia;
+	}
 
-    public int getAutonomiaBateria() {
-        return autonomiaBateria;
-    }
-    public void setAutonomiaBateria(int autonomiaBateria) {
-        this.autonomiaBateria = autonomiaBateria;
-    }
+	public int getAutonomia() {
+		return autonomia;
+	}
 
-    // Método de la interfaz Alquilable
-    @Override
-    public double calcularPrecio(int dias) {
-        double precioBase = dias * getPrecioDia();
-        // Ejemplo: los eléctricos tienen un 5% de descuento
-        double descuento = precioBase * 0.05;
-        return precioBase - descuento;
-    }
+	public void setAutonomia(int autonomia) {
+		this.autonomia = autonomia;
+	}
 
-    @Override
-    public String toString() {
-        return super.toString() + " | Autonomía batería: " + autonomiaBateria + " km";
-    }
+	@Override
+	public double calcularPrecio(int dias) {
+		return getPrecioDia() * dias;
+	}
 }
