@@ -9,9 +9,9 @@ public class Vehiculo implements Alquilable {
 	private int plazas;
 	private double precioDia;
 	private String estado;
-	private int idCategoria;
+	private Categoria categoria;
 	
-	public Vehiculo(String matricula, String marca, String modelo, int añoFabricacion, int combustible, int plazas, double precioDia, String estado, int idCategoria) {
+	public Vehiculo(String matricula, String marca, String modelo, int añoFabricacion, int combustible, int plazas, double precioDia, String estado, Categoria categoria) {
 		this.matricula = matricula;
 		this.marca = marca;
 		this.modelo = modelo;
@@ -20,7 +20,7 @@ public class Vehiculo implements Alquilable {
 		this.plazas = plazas;
 		this.precioDia = precioDia;
 		this.estado = estado;
-		this.idCategoria = idCategoria;
+		this.categoria = categoria;
 	}
 
 	public String getMatricula() {
@@ -71,16 +71,16 @@ public class Vehiculo implements Alquilable {
 	public void setEstado(String estado) {
 		this.estado = estado;
 	}
-	public int getIdCategoria() {
-		return idCategoria;
+	public Categoria getCategoria() {
+		return categoria;
 	}
-	public void setIdCategoria(int idCategoria) {
-		this.idCategoria = idCategoria;
+	public void setCategoria(Categoria categoria) {
+		this.categoria = categoria;
 	}
 		
 	public String toString() {
 		return "Vehiculo: " + matricula + marca + "Modelo - " + modelo + "Fabricación en " + añoFabricacion + " Combustible - " + combustible + " Plazas - " + plazas + " Precio x día - " + precioDia
-				+ " Estado - " + estado + " Categoria -" + idCategoria;
+				+ " Estado - " + estado + " Categoria -" + categoria;
 	}
 
 	@Override
