@@ -1,3 +1,5 @@
+package DAO;
+import java.util.Scanner;
 
 public class App {
 	public static void main(String[] args) {
@@ -10,6 +12,46 @@ public class App {
 // Consultar el historial completo de alquileres realizados por un cliente concreto.
 // Añadir una nueva categoría de vehículos al catálogo de la empresa.
 		
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Bienvenido a Rueda Fácil - Gestión de Alquiler de Vehículos");
+		System.out.println("1. Registrar un nuevo cliente");
+		System.out.println("2. Dar de alta un nuevo vehículo");
+		System.out.println("3. Registrar un nuevo alquiler");
+		System.out.println("4. Consultar vehículos disponibles por categoría");
+		System.out.println("5. Modificar datos de un vehículo");
+		System.out.println("6. Eliminar un vehículo del sistema");
+		System.out.println("7. Consultar historial de alquileres de un cliente");
+		System.out.println("8. Añadir una nueva categoría de vehículos");
+		System.out.println("Seleccione una opción del menú: ");
+		int opcion = sc.nextInt();
 		
+		switch (opcion) {
+			case 1:
+				// Registrar un nuevo cliente
+				break;
+			case 2:
+				// Dar de alta un nuevo vehículo
+				break;
+			case 3:
+				// Registrar un nuevo alquiler
+				break;
+			case 4:
+				// Consultar vehículos disponibles por categoría
+				break;
+			case 5:
+				// Modificar datos de un vehículo
+				break;
+			case 6:
+				// Eliminar un vehículo del sistema
+				break;
+			case 7:
+				// Consultar historial de alquileres de un cliente
+				break;
+			case 8:
+				// Añadir una nueva categoría de vehículos
+				break;
+			default:
+				System.out.println("Opción no válida. Por favor, elija una opción del menú.");
+		}
 	}
 }
