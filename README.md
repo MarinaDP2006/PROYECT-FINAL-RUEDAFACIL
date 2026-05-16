@@ -5,8 +5,7 @@ Aplicación para la gestión de una empresa de alquiler de vehículos. Permite a
 
 ## Requisitos funcionales del sistema
 - Gestión de clientes
-- Gestión de vehículos
-- Gestión de categorías de vehículos
+- Gestión de vehículos y categorías
 - Gestión de empleados
 - Gestión de alquileres
 - Cálculo de precios
