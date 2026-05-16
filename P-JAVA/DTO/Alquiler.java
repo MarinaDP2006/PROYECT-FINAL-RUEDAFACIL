@@ -1,7 +1,7 @@
 package DTO;
 import java.util.Date;
 
-public class Alquiler implements Alquilable {
+public class Alquiler {
 	private int idAlquiler;
 	private Date fechaInicio;
 	private Date fechaPrevistaDevolucion;
@@ -59,9 +59,4 @@ public class Alquiler implements Alquilable {
 		return "Alquiler - " + idAlquiler + " Fecha Inicio :" + fechaInicio + " Fecha Prevista Devolucion: " + fechaPrevistaDevolucion 
 				+ " Fecha Real Devolucion: " + fechaRealDevolucion + " Estado: " + estadoContrato + " Precio Total: " + precioTotal;
 	}
-
-	@Override
-	public double calcularPrecio(int dias) {
-		return 0;
-	}	
 }
