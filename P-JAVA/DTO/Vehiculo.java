@@ -5,13 +5,13 @@ public class Vehiculo implements Alquilable {
 	private String marca;
 	private String modelo;
 	private int añoFabricacion;
-	private int combustible;
+	private String combustible;
 	private int plazas;
 	private double precioDia;
 	private String estado;
-	private Categoria categoria;
+	private String categoria;
 	
-	public Vehiculo(String matricula, String marca, String modelo, int añoFabricacion, int combustible, int plazas, double precioDia, String estado, Categoria categoria) {
+	public Vehiculo(String matricula, String marca, String modelo, int añoFabricacion, String combustible, int plazas, double precioDia, String estado, String categoria) {
 		this.matricula = matricula;
 		this.marca = marca;
 		this.modelo = modelo;
@@ -47,10 +47,10 @@ public class Vehiculo implements Alquilable {
 	public void setAñoFabricacion(int añoFabricacion) {
 		this.añoFabricacion = añoFabricacion;
 	}
-	public int getCombustible() {
+	public String getCombustible() {
 		return combustible;
 	}
-	public void setCombustible(int combustible) {
+	public void setCombustible(String combustible) {
 		this.combustible = combustible;
 	}
 	public int getPlazas() {
@@ -71,10 +71,10 @@ public class Vehiculo implements Alquilable {
 	public void setEstado(String estado) {
 		this.estado = estado;
 	}
-	public Categoria getCategoria() {
+	public String getCategoria() {
 		return categoria;
 	}
-	public void setCategoria(Categoria categoria) {
+	public void setCategoria(String categoria) {
 		this.categoria = categoria;
 	}
 		
@@ -84,7 +84,8 @@ public class Vehiculo implements Alquilable {
 	}
 
 	@Override
-	public double calcularPrecio(int dias) {
+// Calcular el precio total del alquiler multiplicando el precio por día por la cantidad de días
+	public double calcularPrecio(int dias, int precioDia) { 
 		return precioDia * dias;
 	}
 }

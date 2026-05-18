@@ -3,12 +3,12 @@ package DTO;
 public class Empleado {
 	private int idEmpleado;
 	private String nombre;
-	private String cargo;
+	private Cargo cargo;
 	private String oficina;
 	private String turno;
 	private int añosExp;
 	
-	public Empleado(int idEmpleado, String nombre, String cargo, String oficina, String turno, int añosExp) {
+	public Empleado(int idEmpleado, String nombre, Cargo cargo, String oficina, String turno, int añosExp) {
 		this.idEmpleado = idEmpleado;
 		this.nombre = nombre;
 		this.cargo = cargo;
@@ -29,10 +29,10 @@ public class Empleado {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-	public String getCargo() {
+	public Cargo getCargo() {
 		return cargo;
 	}
-	public void setCargo(String cargo) {
+	public void setCargo(Cargo cargo) {
 		this.cargo = cargo;
 	}
 	public String getOficina() {

@@ -4,10 +4,10 @@ public class Cliente {
 	private String dni;
 	private String nombre;
 	private String correo;
-	private int telefono;
+	private String telefono;
 	private String carnetConducir;
 	
-	public Cliente(String dni, String nombre, String correo, int telefono, String carnetConducir) {
+	public Cliente(String dni, String nombre, String correo, String telefono, String carnetConducir) {
 		this.dni = dni;
 		this.nombre = nombre;
 		this.correo = correo;
@@ -33,10 +33,10 @@ public class Cliente {
 	public void setCorreo(String correo) {
 		this.correo = correo;
 	}
-	public int getTelefono() {
+	public String getTelefono() {
 		return telefono;
 	}
-	public void setTelefono(int telefono) {
+	public void setTelefono(String telefono) {
 		this.telefono = telefono;
 	}
 	public String getCarnetConducir() {
