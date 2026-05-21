@@ -4,9 +4,6 @@ import java.util.Iterator;
 import java.util.List;
 import DTO.Cliente;
 
-//PARA LOS METODOS INDICADOS SE USARÁN:
-//HashMap, TreeSet, ArrayList, LinkedList y uso de streams filter(), map(), sorted(), collect(), Comparable y Comparator e Iteradores para eliminación 
-
 public class ClienteD {
 	// CRUD COMPLETO 
 	public void crearCliente(Cliente cliente) {
