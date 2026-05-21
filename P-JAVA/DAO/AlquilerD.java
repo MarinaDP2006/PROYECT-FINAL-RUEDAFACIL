@@ -12,16 +12,25 @@ public class AlquilerD {
 	public void crearAlquiler(Alquiler alquiler) {
 	List<Alquiler> alquileres = new ArrayList<>(); // Lista de alquileres
 	alquileres.add(alquiler) // Agregar a la lista
+	System.out.println("Alquiler creado: " + alquiler.getIdAlquiler(), + "Empleado a cargo: " + alquiler.getIdEmpleado(), + "Cliente: " + alquiler.getIdCliente() + "Fecha: " + alquiler.getFechaInicio(), + "Prevista devolución: " + alquiler.getFechaPrevistaDevolucion(), + "Fecha real devolución: " + alquiler.getFechaRealDevolucion(), + "Contrato: " + alquiler.getEstadoContrato());		
 	}
 	
 	public void actualizarAlquiler(Alquiler alquiler) {
 		
 	}
-
-	public void eliminarAlquiler(int idAlquiler) {
-		
+ 
+	public void eliminarAlquiler(int idAlquiler) {  // Iterator para eliminar de la lista mientras se itera
+		Iterator<Alquiler> iterator = new ArrayList<Alquiler>().iterator(); // Lista de alquileres
+		while (iterator.hasNext()) {
+			// Mientras que haya alquileres en la lista, se obtiene el siguiente
+			Alquiler alquiler = iterator.next();
+			if (alquiler.getIdAlquiler().equals(id)) { // Se elimina por id
+				iterator.remove(); // Eliminar de la lista
+				System.out.println("Alquiler con id " + id + " eliminado.");
+				return;
+			}
+		}
 	}
-
 // Buscar un alquiler por su ID 
 	public Alquiler buscarPorId(int idAlquiler) {
 	
