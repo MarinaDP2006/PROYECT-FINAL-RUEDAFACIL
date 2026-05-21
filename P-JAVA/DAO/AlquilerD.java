@@ -34,10 +34,14 @@ public class AlquilerD {
 	
 // Buscar un alquiler por su ID 
 	public Alquiler buscarPorId(int idAlquiler) {
-	
-		
-		return null; // Devuelve el alquiler encontrado o vacío si no lo encuentra
-	}
+			List<Alquiler> alquileres = new ArrayList<>(); 
+		for (Alquiler alquiler : alquileres) {
+			if (alquiler.getIdAlquiler().equals(id)) { // Se busca por id
+				return alquiler; // Devuelve el encontrado
+			}
+		}
+		return null; // Devuelve null si no se encuentra
+}
 
 // Listar todos los alquileres
   	public List<Alquiler> listarTodos() {
