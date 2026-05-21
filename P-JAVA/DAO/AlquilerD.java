@@ -10,7 +10,8 @@ import DTO.Alquiler;
 public class AlquilerD {
 // CRUD COMPLETO
 	public void crearAlquiler(Alquiler alquiler) {
-
+	List<Alquiler> alquileres = new ArrayList<>(); // Lista de alquileres
+	alquileres.add(alquiler) // Agregar a la lista
 	}
 	
 	public void actualizarAlquiler(Alquiler alquiler) {
