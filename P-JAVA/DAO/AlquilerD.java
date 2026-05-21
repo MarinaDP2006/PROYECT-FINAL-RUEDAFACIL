@@ -31,6 +31,7 @@ public class AlquilerD {
 			}
 		}
 	}
+	
 // Buscar un alquiler por su ID 
 	public Alquiler buscarPorId(int idAlquiler) {
 	
