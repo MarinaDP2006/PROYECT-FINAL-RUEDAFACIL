@@ -11,18 +11,18 @@ public class ClienteD {
 	// CRUD COMPLETO 
 	public void crearCliente(Cliente cliente) {
 		List<Cliente> clientes = new ArrayList<>(); // Lista de clientes
-		clientes.add(cliente); // Agregar el nuevo cliente a la lista
+		clientes.add(cliente); // Agregar a la lista
 		System.out.println("Cliente creado: " + cliente.getNombre() + " - DNI: " + cliente.getDni() + " - Correo: " + cliente.getCorreo() + " - Teléfono: " + cliente.getTelefono() + " - Carnet de Conducir: " + cliente.getCarnetConducir());
 	}
 	
-	public void modificarCliente(Cliente cliente) { // Se busca el cliente por DNI y se actualizan sus datos
+	public void modificarCliente(Cliente cliente) { // Se busca por DNI y se actualizan sus datos
 		List<Cliente> clientes = new ArrayList<>(); // Lista de clientes
 		for (Cliente c : clientes) {
-			if (c.getDni().equals(cliente.getDni())) { // Se busca por DNI
-				c.setNombre(cliente.getNombre()); // Actualizar nombre
-				c.setCorreo(cliente.getCorreo()); // Actualizar correo
-				c.setTelefono(cliente.getTelefono()); // Actualizar teléfono
-				c.setCarnetConducir(cliente.getCarnetConducir()); // Actualizar carnet de conducir
+			if (c.getDni().equals(cliente.getDni())) { // Se busca por DNI y actualiza datos
+				c.setNombre(cliente.getNombre());   
+				c.setCorreo(cliente.getCorreo()); 
+				c.setTelefono(cliente.getTelefono());
+				c.setCarnetConducir(cliente.getCarnetConducir());
 				System.out.println("Cliente con DNI " + cliente.getDni() + " modificado.");
 				return;
 			}
@@ -32,7 +32,7 @@ public class ClienteD {
 	public void eliminarCliente(String dni) { // Iterator para eliminar elementos de la lista mientras se itera
 		Iterator<Cliente> iterator = new ArrayList<Cliente>().iterator(); // Lista de clientes
 		while (iterator.hasNext()) {
-			// Mientras que haya clientes en la lista, se obtiene el siguiente cliente
+			// Mientras que haya clientes en la lista, se obtiene el siguiente
 			Cliente cliente = iterator.next();
 			if (cliente.getDni().equals(dni)) { // Se elimina por DNI
 				iterator.remove(); // Eliminar el cliente de la lista
