@@ -69,8 +69,7 @@ public class AlquilerD {
 // Listar los alquileres dentro de un rango de fechas
 	public List<Alquiler> consultarPorFechas(Date inicio, Date fin) {
 		return alquileres.values().stream()
-			.filter(alquiler -> alquiler.getFechaInicio().compareTo(inicio) >= 0 &&
-			                    alquiler.getFechaInicio().compareTo(fin) <= 0)
+			.filter(alquiler -> alquiler.getFechaInicio().compareTo(inicio) >= 0 && alquiler.getFechaInicio().compareTo(fin) <= 0)
 			.sorted((a1, a2) -> a1.getFechaInicio().compareTo(a2.getFechaInicio()))
 			.collect(Collectors.toList());
 	}
@@ -81,9 +80,7 @@ public class AlquilerD {
 			Alquiler alquiler = alquileres.get(idAlquiler);
 			alquiler.setFechaDevolucionReal(fechaReal);
 			alquiler.setPrecioFinal(nuevoPrecio);
-			System.out.println("Devolución actualizada: ID " + idAlquiler + 
-			                   " | Fecha devolución: " + fechaReal + 
-			                   " | Precio final: " + nuevoPrecio);
+			System.out.println("Devolución actualizada: ID " + idAlquiler + " | Fecha devolución: " + fechaReal + " | Precio final: " + nuevoPrecio);
 		} else {
 			System.out.println("Alquiler no encontrado con ID: " + idAlquiler);
 		}
