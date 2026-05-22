@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.TreeSet;
 import java.util.LinkedList;
 import java.util.Comparator;
 import java.util.stream.Collectors;
@@ -59,27 +58,5 @@ public class CategoriaD {
 				.sorted(Comparator.comparingInt(Categoria::getIdCategoria))
 				.collect(Collectors.toList()); // Devuelve una lista de categorías
 		return categorias;
-	}
-	
-	// BONUS - Buscar por nombre usando streams
-	public List<Categoria> buscarPorNombre(String nombre) {
-		return categoriasMap.values().stream()
-				.filter(c -> c.getNombre().toUpperCase().contains(nombre.toUpperCase()))
-				.sorted(Comparator.comparing(Categoria::getNombre))
-				.collect(Collectors.toList());
-	}
-	
-	// BONUS - Obtener TreeSet ordenado por nombre
-	public TreeSet<String> obtenerNombresOrdenados() {
-		return categoriasMap.values().stream()
-				.map(Categoria::getNombre)
-				.collect(Collectors.toCollection(TreeSet::new));
-	}
-	
-	// BONUS - Obtener LinkedList
-	public LinkedList<Categoria> obtenerEnLinkedList() {
-		return categoriasMap.values().stream()
-				.sorted(Comparator.comparingInt(Categoria::getIdCategoria))
-				.collect(Collectors.toCollection(LinkedList::new));
 	}
 }
