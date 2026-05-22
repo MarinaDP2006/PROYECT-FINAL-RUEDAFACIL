@@ -1,6 +1,7 @@
 package DAO;
 import java.util.ArrayList;
 import DTO.Vehiculo;
+import DTO.Categoria;
 
 //PARA LOS METODOS INDICADOS SE USARÁN:
 //HashMap, TreeSet, ArrayList, LinkedList y uso de streams filter(), map(), sorted(), collect(), Comparable y Comparator e Iteradores para eliminación 
@@ -30,7 +31,7 @@ public class VehiculoD {
 	}
 	
 // Listar  por categoría
-	public static void listarPorCategoria(String categoria) {
+	public static void listarPorCategoria(Categoria categoria) {
 		ArrayList<Vehiculo> categorias = new ArrayList<Vehiculo>();
 		
 	}
