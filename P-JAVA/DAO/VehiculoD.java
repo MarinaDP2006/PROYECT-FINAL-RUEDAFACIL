@@ -3,9 +3,6 @@ import java.util.ArrayList;
 import DTO.Vehiculo;
 import DTO.Categoria;
 
-//PARA LOS METODOS INDICADOS SE USARÁN:
-//HashMap, TreeSet, ArrayList, LinkedList y uso de streams filter(), map(), sorted(), collect(), Comparable y Comparator e Iteradores para eliminación 
-
 public class VehiculoD {
 // CRUD COMPLETO
 	public void crearVehiculo(Vehiculo vehiculo) {
