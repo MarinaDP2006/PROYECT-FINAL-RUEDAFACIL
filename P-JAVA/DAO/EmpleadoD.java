@@ -1,11 +1,7 @@
 package DAO;
 import java.util.ArrayList;
 import java.util.List;
-
 import DTO.Empleado;
-
-//PARA LOS METODOS INDICADOS SE USARÁN:
-//HashMap, TreeSet, ArrayList, LinkedList y uso de streams filter(), map(), sorted(), collect(), Comparable y Comparator e Iteradores para eliminación 
 
 public class EmpleadoD {
 	// CRUD COMPLETO
