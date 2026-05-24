@@ -3,12 +3,10 @@ package DTO;
 public class Categoria {
     private int idCategoria;
     private String nombre;
-    private String descripcion;
     
-    public Categoria(int idCategoria, String nombre, String descripcion) {
+    public Categoria(int idCategoria, String nombre) {
         this.idCategoria = idCategoria;
         this.nombre = nombre;
-        this.descripcion = descripcion;
     }
     
     public int getIdCategoria() {
@@ -31,12 +29,9 @@ public class Categoria {
         return descripcion;
     }
     
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
     
     @Override
     public String toString() {
-        return "Categoria " + idCategoria + "" +  "" + nombre + "" + descripcion;
+        return "Categoria " + idCategoria + "" +  "" + nombre;
     }
 }
