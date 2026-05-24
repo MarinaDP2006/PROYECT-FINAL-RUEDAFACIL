@@ -1,6 +1,6 @@
 # RuedaFácil - Sistema de Alquiler de Vehículos
-
-## Estructura
+## Estructura del Proyecto
+```plaintext
 RuedaFacil
 │
 ├── src
@@ -15,29 +15,53 @@ RuedaFacil
 │   └── VehiculoD
 │
 └── DTO
-    ├── Alquilable (interfaz)
+    ├── Alquilable (Interfaz)
     ├── Alquiler
-    ├── Cargo (enum de Empleado)
+    ├── Cargo (Enum)
     ├── Categoria
     ├── Cliente
     ├── ClienteNoEncontradoException
     ├── Empleado
-    ├── EstadoContrato (enum de Alquiler)
+    ├── EstadoContrato (Enum)
     ├── Vehiculo
     └── VehiculoNoDisponibleException
-    
+```
+
 ## Descripción
-Aplicación para la gestión de una empresa de alquiler de vehículos. Permite administrar clientes, vehículos, categorías, empleados y contratos de alquiler, con cálculo automático de precios e interfaz por consola.
+RuedaFácil es una aplicación desarrollada en Java para la gestión de una empresa de alquiler de vehículos por consola. El sistema permite administrar clientes, vehículos, categorías, empleados y alquileres, además de consultar disponibilidad de vehículos por categoría e historial de alquileres de clientes.
 
-## Requisitos funcionales del sistema
-- Gestión de clientes
-- Gestión de vehículos y categorías
-- Gestión de empleados
-- Gestión de alquileres
-- Cálculo de precios de alquiler por vehiculo por dia
-- Consultas
+## Funcionalidades
+### Gestión de clientes: 
+- Crear nuevos clientes.
+- Modificar datos de clientes.
+- Eliminar clientes del sistema.
+- Consultar historial de alquileres de un cliente.
 
-## ¿Qué se ha usado?
+### Gestión de vehículos:
+- Registrar nuevos vehículos.
+- Modificar información de vehículos.
+- Eliminar vehículos.
+- Consultar vehículos disponibles por categoría.
+
+### Gestión de alquileres:
+- Crear contratos de alquiler.
+- Modificar datos de alquileres.
+- Eliminar alquileres.
+- Gestión de estados del contrato mediante enumeraciones.
+
+### Gestión de categorías y empleados:
+- Asociación de vehículos con categorías.
+- Gestión de empleados relacionados con los alquileres.
+
+### Gestión de excepciones:
+Excepciones personalizadas para controlar situaciones específicas del sistema:
+- `ClienteNoEncontradoException`
+- `VehiculoNoDisponibleException`
+
+## Base de Datos
+La aplicación se conecta a MySQL con la clase `ConexionBD`, encargada de gestionar la conexión JDBC.
+
+## Tecnologías utilizadas
 - Java
 - MySQL
 - JDBC
