@@ -20,7 +20,7 @@ public class App {
 		Scanner sc = new Scanner(System.in);
 		int opcion;
 		do {
-		System.out.println("Bienvenido a Rueda Fácil - Gestión de Alquiler de Vehículos");
+		System.out.println("Gestión de Alquiler de Vehículos");
 		System.out.println("1. Gestión de clientes.");
 		System.out.println("2. Gestión de vehículos.");
 		System.out.println("3. Gestión de alquileres.");
@@ -133,16 +133,12 @@ public class App {
 				    System.out.println("Ingrese el ID del empleado a cargo del alquiler:");
 				    int idEmpleado = sc.nextInt();
 				    System.out.println("Ingrese la fecha de inicio del alquiler (formato: dd/MM/yyyy):");
-				    Date fechaInicio;
-				    System.out.println("Ingrese la fecha prevista de devolución (formato: dd/MM/yyyy):");
-				    Date fechaPrevistaDevolucion;
-				    System.out.println("Ingrese la fecha real de devolución (formato: dd/MM/yyyy) o deje en blanco si aún no se ha devuelto el vehículo:");
-				    Date fechaRealDevolucion;
+				    Date fechaInicio = sc.next();
 				    System.out.println("Ingrese el estado del contrato (activo, finalizado, cancelado):");
 				    EstadoContrato estadoContrato = EstadoContrato.valueOf(sc.next().toUpperCase());
 				    System.out.println("Ingrese el precio total del alquiler:");
 				    double precioTotal = sc.nextDouble();
-				    Alquiler nuevoAlquiler = new Alquiler(idAlquiler, idEmpleado, idCliente, fechaInicio, fechaPrevistaDevolucion, fechaRealDevolucion, estadoContrato , precioTotal);
+				    Alquiler nuevoAlquiler = new Alquiler();
 				    System.out.println("El nuevo alquiler ha sido creado.");
 				} else if (opcion == 2) {
 					// Modificar datos de un alquiler (Se pueden modificar las fechas previstas de devolución y el precio total del alquiler)
@@ -164,9 +160,8 @@ public class App {
 			case 3:
 				// Crear un nuevo alquiler (Se asocia el cliente, vehículo, fechas y empleado a cargo)
 				System.out.println("-- Crear un nuevo alquiler --");
-				// Método de AlquilerD de crearAlquiler
-			    break;
-			    
+				AlquilerD.crearAlquiler();
+			    break;			    
 			case 4:
 				// Consultar vehículos disponibles por categoría
 				System.out.println("-- Consultar vehículos disponibles por categoría --");
@@ -174,7 +169,6 @@ public class App {
 			    String categoria = sc.next();
 			    System.out.println("Vehículos disponibles en la categoría " + categoria + ":");
 			    try {
-					// Método de VehiculoD listarPorCategoria
 				    VehiculoD.listarPorCategoria(categoria);
 				} catch (Exception e) {
 					// Excepcion de VehiculoNoDisponibleException
@@ -212,7 +206,7 @@ public class App {
 				} 			    				 
 			    break;
 			case 8:
-				// Añadir una nueva categoría de vehículos (Se asocia el nombre de la categoría del vehículo)
+				// Añadir una nueva categoría de vehículos que se asocia el nombre de la categoría del vehículo
 				System.out.println("-- Añadir una nueva categoría de vehículos --");
 			    System.out.println("Ingrese el nombre de la nueva categoría:");
 			    String nuevaCategoria = sc.next();
