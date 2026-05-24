@@ -2,28 +2,29 @@
 
 ## Estructura
 RuedaFacil
-|____ src
-|    |__ App
-|    |__ ConexionBD
-|
-|___ DAO
-|    |__ AlquilerD
-|    |__ CategoriaD
-|    |__ ClienteD
-|    |__ EmpleadoD
-|    |__ VehiculoD
-|
-|___ DTO
-    |__ Alquilable (interfaz)
-    |__ Alquiler
-    |__ Cargo (enum de Empleado)
-    |__ Categoria
-    |__ Cliente
-    |__ ClienteNoEncontradoException
-    |__ Empleado
-    |__ EstadoContrato (enum de Alquiler)
-    |__ Vehiculo
-    |__ VehiculoNoDisponibleException
+│
+├── src
+│   ├── App
+│   └── ConexionBD
+│
+├── DAO
+│   ├── AlquilerD
+│   ├── CategoriaD
+│   ├── ClienteD
+│   ├── EmpleadoD
+│   └── VehiculoD
+│
+└── DTO
+    ├── Alquilable (interfaz)
+    ├── Alquiler
+    ├── Cargo (enum de Empleado)
+    ├── Categoria
+    ├── Cliente
+    ├── ClienteNoEncontradoException
+    ├── Empleado
+    ├── EstadoContrato (enum de Alquiler)
+    ├── Vehiculo
+    └── VehiculoNoDisponibleException
     
 ## Descripción
 Aplicación para la gestión de una empresa de alquiler de vehículos. Permite administrar clientes, vehículos, categorías, empleados y contratos de alquiler, con cálculo automático de precios e interfaz por consola.
