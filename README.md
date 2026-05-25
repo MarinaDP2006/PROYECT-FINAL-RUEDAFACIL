@@ -57,11 +57,3 @@ RuedaFácil es una aplicación desarrollada en Java para la gestión de una empr
 Excepciones personalizadas para controlar situaciones específicas del sistema:
 - `ClienteNoEncontradoException`
 - `VehiculoNoDisponibleException`
-
-## Base de Datos
-La aplicación se conecta a MySQL con la clase `ConexionBD`, encargada de gestionar la conexión JDBC.
-
-## Tecnologías utilizadas
-- Java
-- MySQL
-- JDBC
