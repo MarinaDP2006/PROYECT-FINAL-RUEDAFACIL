@@ -15,6 +15,9 @@ public class Cliente {
 		this.carnetConducir = carnetConducir;
 	}
 
+	public Cliente() {
+	}
+
 	public String getDni() {
 		return dni;
 	}

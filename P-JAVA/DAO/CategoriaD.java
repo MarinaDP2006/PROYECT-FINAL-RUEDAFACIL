@@ -4,19 +4,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.LinkedList;
 import java.util.Comparator;
 import java.util.stream.Collectors;
 import DTO.Categoria;
 
 public class CategoriaD {
-	private HashMap<Integer, Categoria> categoriasMap = new HashMap<>();
-	private int proximoId = 1;
+	private static HashMap<Integer, Categoria> categoriasMap = new HashMap<>();
+	private static int proximoId = 1; // id automatico para nuevas categorías
 	
 	// CRUD COMPLETO
-	public void crearCategoria(String nombre, String descripcion) {
+	public static void crearCategoria(String nombre) {
 		List<Categoria> categorias = new ArrayList<>(); // Lista de categorias
-		Categoria nuevaCategoria = new Categoria(proximoId++, nombre, descripcion);
+		Categoria nuevaCategoria = new Categoria(proximoId++, nombre);
 		categoriasMap.put(nuevaCategoria.getIdCategoria(), nuevaCategoria);
 		categorias.add(nuevaCategoria); // Agregar a la lista
 		System.out.println("Categoria nueva: " + nuevaCategoria);	
@@ -27,7 +26,6 @@ public class CategoriaD {
 		for (Categoria cat : categorias) {
 			if (cat.getIdCategoria() == idCategoria) { // Se busca por Id y actualiza datos
 				cat.setNombre(nombre);
-				cat.setDescripcion(descripcion);
 				System.out.println("Categoria con ID " + idCategoria + " modificado.");
 				return;
 			}

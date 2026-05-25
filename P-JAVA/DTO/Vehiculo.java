@@ -23,6 +23,9 @@ public class Vehiculo implements Alquilable {
 		this.categoria = categoria;
 	}
 
+	public Vehiculo() {
+	}
+
 	public String getMatricula() {
 		return matricula;
 	}

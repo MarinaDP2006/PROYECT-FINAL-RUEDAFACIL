@@ -10,10 +10,8 @@ public class Alquiler {
 	private Date fechaRealDevolucion;
 	private EstadoContrato estadoContrato;
 	private double precioTotal;
-	
-	
-	public Alquiler(int idAlquiler, int idEmpleado, int idCliente, Date fechaInicio, Date fechaPrevistaDevolucion,
-			Date fechaRealDevolucion, EstadoContrato estadoContrato, double precioTotal) {
+		
+	public Alquiler(int idAlquiler, int idEmpleado, int idCliente, Date fechaInicio, Date fechaPrevistaDevolucion, Date fechaRealDevolucion, EstadoContrato estadoContrato, double precioTotal) {
 		this.idAlquiler = idAlquiler;
 		this.idEmpleado = idEmpleado;
 		this.idCliente = idCliente;
@@ -24,7 +22,9 @@ public class Alquiler {
 		this.precioTotal = precioTotal;
 	}
 	
-	
+	public Alquiler() {
+	}
+
 	public int getIdAlquiler() {
 		return idAlquiler;
 	}
@@ -74,11 +74,9 @@ public class Alquiler {
 		this.precioTotal = precioTotal;
 	}
 
-
 	@Override
 	public String toString() {
-		return "Alquiler - " + idAlquiler + " Fecha Inicio :" + fechaInicio + " Fecha Prevista Devolucion: " + fechaPrevistaDevolucion 
-				+ " Fecha Real Devolucion: " + fechaRealDevolucion + " Estado: " + estadoContrato + " Precio Total: " + precioTotal + " Id Empleado: " + idEmpleado + " Id Cliente: " + idCliente;
+		return "Alquiler - " + idAlquiler + " Fecha Inicio :" + fechaInicio + " Fecha Prevista Devolucion: " + fechaPrevistaDevolucion + " Fecha Real: " + fechaRealDevolucion + " Estado: " + estadoContrato + " Precio Total: " + precioTotal + " Id Empleado: " + idEmpleado + " Id Cliente: " + idCliente;
 	}
 	
 	// Calcular precio total del alquiler multiplicando el precio por día por la cantidad de días
