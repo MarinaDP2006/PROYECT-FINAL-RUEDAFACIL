@@ -1,56 +1,81 @@
 package DAO;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
 import DTO.Categoria;
 import DTO.Vehiculo;
 
 public class VehiculoD {
-	
-// CRUD COMPLETO
+    // Lista en memoria de vehículos
+    private static List<Vehiculo> vehiculos = new ArrayList<>();
+
+	// CRUD COMPLETO
     public void crearVehiculo(Vehiculo vehiculo) {
-        vehiculos.add(vehiculo);
+        vehiculos.add(vehiculo); // Añade a la lista
         System.out.println("Vehículo creado: " + vehiculo.getMatricula());
     }
-	
-    public void actualizarVehiculo(Vehiculo vehiculoActualizado) {
-        for (Vehiculo v : vehiculos) {
-            if (v.getMatricula().equals(vehiculoActualizado.getMatricula())) {
-                v.setModelo(vehiculoActualizado.getModelo());
-                v.setPrecioDia(vehiculoActualizado.getPrecioDia());
-                v.setDisponible(vehiculoActualizado.isDisponible());
-                v.setCategoria(vehiculoActualizado.getCategoria());
-                System.out.println("Vehículo actualizado: " + v.getMatricula());
+
+    public void actualizarVehiculo(Vehiculo vehActualizado) {
+        for (Vehiculo v : vehiculos) { // Recorre la lista
+            if (v.getMatricula().equals(vehActualizado.getMatricula())) { // Coincidencia por matrícula
+                v.setModelo(vehActualizado.getModelo());
+                v.setPrecioDia(vehActualizado.getPrecioDia());
+                v.setDisponible(vehActualizado.isDisponible());
+                v.setCategoria(vehActualizado.getCategoria());
+                System.out.println("Vehículo actualizado.");
                 return;
             }
         }
-        System.out.println("Vehículo no encontrado: " + vehiculoActualizado.getMatricula());
+        System.out.println("Vehículo no encontrado.");
     }
-	
+
     public void eliminarVehiculo(Vehiculo vehiculo) {
         Iterator<Vehiculo> it = vehiculos.iterator();
         while (it.hasNext()) {
             Vehiculo v = it.next();
-            if (v.getMatricula().equals(vehiculo.getMatricula())) {
-                it.remove();
-                System.out.println("Vehículo eliminado: " + vehiculo.getMatricula());
+            if (v.getMatricula().equals(vehiculo.getMatricula())) { // Coincidencia
+                it.remove(); // Elimina
+                System.out.println("Vehículo eliminado.");
                 return;
             }
         }
-        System.out.println("Vehículo no encontrado: " + vehiculo.getMatricula());
+        System.out.println("Vehículo no encontrado.");
     }
-	
-// Buscar por matrícula
-	public static void buscarPorMatricula(String matricula) {
-		
-	}
-	
-// Listar todos
-	public static void listarTodos() {
-		ArrayList<VehiculoD> vehiculos = new ArrayList<>(); // Devuelve una lista de vehículos
-	}
-	
-// Listar  por categoría
-    public static void listarPorCategoria(int idCategoria) {
+
+    // Buscar vehículo por matrícula
+    public static Vehiculo buscarPorMatricula(String matricula) {
+        for (Vehiculo v : vehiculos) {
+            if (v.getMatricula().equals(matricula)) { // Coincidencia
+                return v;
+            }
+        }
+        return null;
+    }
+
+    // Listar todos los vehículos
+    public static void listarTodos() {
+        if (vehiculos.isEmpty()) { // Si no hay vehículos
+            System.out.println("No hay vehículos registrados.");
+            return;
+        }
+        for (Vehiculo v : vehiculos) {
+            System.out.println(v);
+        }
+    }
+
+    // Listar vehículos por categoría
+    public static void listarPorCategoria(Categoria categoria) {
+        boolean encontrado = false;
+        for (Vehiculo v : vehiculos) {
+            if (v.getCategoria().getIdCategoria() == categoria.getIdCategoria()) { // Coincidencia por categoría
+                System.out.println(v);
+                encontrado = true;
+            }
+        }
+        if (!encontrado) {
+            System.out.println("No hay vehículos en esta categoría.");
+        }
     }
 }
