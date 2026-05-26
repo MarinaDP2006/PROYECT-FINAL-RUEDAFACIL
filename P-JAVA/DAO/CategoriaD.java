@@ -44,12 +44,23 @@ public class CategoriaD {
  		}
  	}
 	
-	// Buscar categoría por ID
- 	public Categoria buscarPorId(int idCategoria) {
- 		Categoria resultado = categoriasMap.getOrDefault(idCategoria, null);
- 		return resultado; // Devuelve la categoría encontrada o null si no se encuentra
-	}
-	
+		// CONSULTA: Buscar categoría por ID
+    public static void listarCategoriasBD() {
+        String sql = "SELECT * FROM categorias";
+
+        try (Connection con = Conexion.conectar();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                System.out.println("ID: " + rs.getInt("id") + " | Nombre: " + rs.getString("nombre")
+                );
+            }
+        } catch (Exception e) {
+            System.out.println("Error consultando categorías: " + e.getMessage());
+        }
+    }
+}	
+
 	// Listar todas las categorías
 	public List<Categoria> listarTodas() {
 		List<Categoria> categorias = categoriasMap.values().stream()
