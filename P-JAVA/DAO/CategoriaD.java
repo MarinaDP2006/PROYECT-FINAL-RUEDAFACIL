@@ -1,71 +1,59 @@
 package DAO;
-import java.util.List;
+
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
-import java.util.Comparator;
-import java.util.stream.Collectors;
+import java.util.List;
+
 import DTO.Categoria;
 
 public class CategoriaD {
-	private static HashMap<Integer, Categoria> categoriasMap = new HashMap<>();
-	private static int proximoId = 1; // id automatico para nuevas categorías
-	
+    // Lista en memoria de categorías
+    private static List<Categoria> categorias = new ArrayList<>();
+    private static int nextId = 1; // ID auto
+
 	// CRUD COMPLETO
-	public static void crearCategoria(String nombre) {
-		List<Categoria> categorias = new ArrayList<>(); // Lista de categorias
-		Categoria nuevaCategoria = new Categoria(proximoId++, nombre);
-		categoriasMap.put(nuevaCategoria.getIdCategoria(), nuevaCategoria);
-		categorias.add(nuevaCategoria); // Agregar a la lista
-		System.out.println("Categoria nueva: " + nuevaCategoria);	
-	}
-
-	public void actualizarCategoria(int idCategoria, String nombre, String descripcion) {
-		List<Categoria> categorias = new ArrayList<>(categoriasMap.values()); // Lista de categorias
-		for (Categoria cat : categorias) {
-			if (cat.getIdCategoria() == idCategoria) { // Se busca por Id y actualiza datos
-				cat.setNombre(nombre);
-				System.out.println("Categoria con ID " + idCategoria + " modificado.");
-				return;
-			}
-		}
-	}
-	
- 	public void eliminarCategoria(int idCategoria) {
- 		Iterator<Map.Entry<Integer, Categoria>> iterator = categoriasMap.entrySet().iterator();
- 		while (iterator.hasNext()) {
- 			Map.Entry<Integer, Categoria> entry = iterator.next();
- 			if (entry.getKey() == idCategoria) {
- 				iterator.remove();
- 				System.out.println("Categoria eliminada: " + entry.getValue());
- 				return;
- 			}
- 		}
- 	}
-	
-		// CONSULTA: Buscar categoría por ID
-    public static void listarCategoriasBD() {
-        String sql = "SELECT * FROM categorias";
-
-        try (Connection con = Conexion.conectar();
-             PreparedStatement ps = con.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
-            while (rs.next()) {
-                System.out.println("ID: " + rs.getInt("id") + " | Nombre: " + rs.getString("nombre")
-                );
-            }
-        } catch (Exception e) {
-            System.out.println("Error consultando categorías: " + e.getMessage());
-        }
+    public static void crearCategoria(String nombre) {
+        Categoria nueva = new Categoria(nextId++, nombre); // Crea categoría con ID único
+        categorias.add(nueva);
+        System.out.println("Categoría creada: " + nueva);
     }
-}	
 
-	// Listar todas las categorías
-	public List<Categoria> listarTodas() {
-		List<Categoria> categorias = categoriasMap.values().stream()
-				.sorted(Comparator.comparingInt(Categoria::getIdCategoria))
-				.collect(Collectors.toList()); // Devuelve una lista de categorías
-		return categorias;
-	}
+    public void actualizarCategoria(int id, String nuevoNombre) {
+        for (Categoria c : categorias) { // Recorre la lista
+            if (c.getIdCategoria() == id) { // Coincidencia por ID
+                c.setNombre(nuevoNombre); // Actualiza nombre
+                System.out.println("Categoría modificada.");
+                return;
+            }
+        }
+        System.out.println("Categoría no encontrada.");
+    }
+
+    public void eliminarCategoria(int id) {
+        Iterator<Categoria> it = categorias.iterator();
+        while (it.hasNext()) {
+            Categoria c = it.next();
+            if (c.getIdCategoria() == id) { // Coincidencia
+                it.remove(); // Elimina
+                System.out.println("Categoría eliminada.");
+                return;
+            }
+        }
+        System.out.println("Categoría no encontrada.");
+    }
+
+    // Buscar categoría por ID
+    public Categoria buscarPorId(int id) {
+        for (Categoria c : categorias) { // Recorre las categorias
+            if (c.getIdCategoria() == id) {
+                return c;
+            }
+        }
+        return null;
+    }
+
+    // Listar todas las categorías
+    public List<Categoria> listarTodas() {
+        return categorias; // Devuelve la lista completa
+    }
 }
