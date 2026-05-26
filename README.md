@@ -4,7 +4,7 @@
 RuedaFacil
 │
 ├── src
-│   ├── App
+│   ├── App_Main
 │   └── ConexionBD
 │
 ├── DAO
