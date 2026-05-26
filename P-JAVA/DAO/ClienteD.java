@@ -20,7 +20,7 @@ public class ClienteD {
 				c.setCorreo(cliente.getCorreo()); 
 				c.setTelefono(cliente.getTelefono());
 				c.setCarnetConducir(cliente.getCarnetConducir());
-				System.out.println("Cliente con DNI " + cliente.getDni() + " modificado.");
+				System.out.println("Cliente modificado.");
 				return;
 			}
 		}
@@ -33,23 +33,37 @@ public class ClienteD {
 			Cliente cliente = iterator.next();
 			if (cliente.getDni().equals(dni)) { // Se elimina por DNI
 				iterator.remove(); // Eliminar el cliente de la lista
-				System.out.println("Cliente con DNI " + dni + " eliminado.");
+				System.out.println("Cliente eliminado.");
 				return;
 			}
 		}
 	}
 	
-	// Buscar por dni de cliente 
-	public static Cliente buscarPorDNI(String dni) {
-		List<Cliente> clientes = new ArrayList<>(); // Lista de clientes
-		for (Cliente cliente : clientes) {
-			if (cliente.getDni().equals(dni)) { // Se busca por DNI
-				return cliente; // Devuelve el cliente encontrado
-			}
-		}
-		return null; // Devuelve el cliente encontrado o null si no se encuentra
-	}
-		
+    // Consulta BD: Buscar cliente por DNI
+    public static Cliente consultarClienteBD(String dni) {
+        String sql = "SELECT * FROM clientes WHERE dni = ?";
+
+        try (Connection con = Conexion.conectar();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, dni); // Sustituye el ? por el DNI
+            ResultSet rs = ps.executeQuery(); // Ejecuta la consulta
+
+			if (rs.next()) { // Si existe el cliente
+                return new Cliente(
+                    rs.getString("dni"),
+                    rs.getString("nombre"),
+                    rs.getString("correo"),
+                    rs.getString("telefono"),
+                    rs.getString("carnet_conducir")
+                );
+            }
+        } catch (Exception e) {
+            System.out.println("Error consultando cliente: " + e.getMessage());
+        }
+        return null;
+    }
+}
+
 	// Listar todos los clientes y sus alquileres asociados
   	public static void listarClientesYAlquileres() {
   		ArrayList<Cliente> clientes = new ArrayList<>(); // Lista de clientes
