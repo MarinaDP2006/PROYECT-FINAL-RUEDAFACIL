@@ -31,7 +31,7 @@ public class ClienteD {
     }
 
     public void eliminarCliente(String dni) {
-        Iterator<Cliente> it = clientes.iterator(); // Iterator para eliminar mientras recorres
+        Iterator<Cliente> it = clientes.iterator(); // Iterator para eliminar
         while (it.hasNext()) {
             Cliente c = it.next();
             if (c.getDni().equals(dni)) { // Coincidencia por DNI
