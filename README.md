@@ -28,7 +28,7 @@ RuedaFacil
 ```
 
 ## Descripción
-RuedaFácil es una aplicación desarrollada en Java para la gestión de una empresa de alquiler de vehículos por consola. El sistema permite administrar clientes, vehículos, categorías, empleados y alquileres, además de consultar disponibilidad de vehículos por categoría e historial de alquileres de clientes.
+RuedaFácil es una aplicación en Java para la gestión de una empresa de alquiler de vehículos por consola. El sistema permite administrar clientes, vehículos, categorías, empleados y alquileres, además de consultar disponibilidad de vehículos por categoría e historial de alquileres de clientes.
 
 ## Funcionalidades
 ### Gestión de clientes: 
@@ -47,13 +47,12 @@ RuedaFácil es una aplicación desarrollada en Java para la gestión de una empr
 - Crear contratos de alquiler.
 - Modificar datos de alquileres.
 - Eliminar alquileres.
-- Gestión de estados del contrato mediante enumeraciones.
+- Gestión de estados del contrato.
 
 ### Gestión de categorías y empleados:
 - Asociación de vehículos con categorías.
 - Gestión de empleados relacionados con los alquileres.
 
 ### Gestión de excepciones:
-Excepciones personalizadas para controlar situaciones específicas del sistema:
 - `ClienteNoEncontradoException`
 - `VehiculoNoDisponibleException`
