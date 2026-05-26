@@ -10,6 +10,7 @@ public class ClienteD {
     // Lista en memoria donde se guardan los clientes
     private static List<Cliente> clientes = new ArrayList<>();
 
+   	// CRUD COMPLETO
     public void crearCliente(Cliente cliente) {
         clientes.add(cliente); // Añade el cliente a la lista
         System.out.println("Cliente creado: " + cliente.getNombre());
