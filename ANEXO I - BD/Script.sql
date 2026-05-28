@@ -16,9 +16,9 @@ CREATE TABLE Cliente (
 CREATE TABLE Empleado (
     id_empleado INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
-    cargo VARCHAR(50) NOT NULL,
+    cargo ENUM (AtencionCliente, PreparadorVehiculo, Mecanico, Inspector, Director),
     oficina VARCHAR(50),
-    turno VARCHAR(20),
+    turno VARCHAR(20), 
     anos_experiencia INT
 );
 CREATE TABLE Vehiculo (
@@ -42,7 +42,7 @@ CREATE TABLE Alquiler (
     id_empleado INT NOT NULL,
     matricula VARCHAR(10) NOT NULL,
     precio_total DECIMAL(10,2),
-    estado_contrato VARCHAR(20) DEFAULT 'activo',
+    estado_contrato ENUM (Activo, Completado, Cancelado),
     FOREIGN KEY (id_cliente) REFERENCES Cliente(dni),
     FOREIGN KEY (id_empleado) REFERENCES Empleado(id_empleado),
     FOREIGN KEY (matricula) REFERENCES Vehiculo(matricula)
@@ -70,7 +70,6 @@ INSERT INTO Vehiculo (matricula, marca, modelo, ano, combustible, plazas, precio
 ('V004', 'Tesla', 'Model S', 2021, 'electrico', 2, 80.00, 'disponible', 4),
 ('V005', 'Jeep', 'Wrangler', 2017, 'gasolina', 4, 35.00, 'disponible', 5),
 ('V006', 'Lamborghini', 'Aventador', 2022, 'gasolina', 2, 150.00, 'disponible', 6);
-
 INSERT INTO Alquiler (fecha_inicio, fecha_devolucion_prevista, id_cliente, id_empleado, matricula, precio_total, estado_contrato) VALUES
 ('2023-04-01', '2023-04-07', 'C11122233', 1, 'V001', 150.00, 'activo'),
 ('2023-04-02', '2023-04-08', 'D44455566', 2, 'V002', 100.00, 'activo'),
