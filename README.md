@@ -15,7 +15,6 @@ RuedaFacil
 │   └── VehiculoD
 │
 └── DTO
-    ├── Alquilable (Interfaz)
     ├── Alquiler
     ├── Cargo (Enum)
     ├── Categoria
