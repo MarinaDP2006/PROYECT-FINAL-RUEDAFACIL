@@ -1,6 +1,6 @@
 package DTO;
 
-public class Vehiculo implements Alquilable {
+public class Vehiculo {
 	private String matricula;
 	private String marca;
 	private String modelo;
@@ -84,11 +84,5 @@ public class Vehiculo implements Alquilable {
 	public String toString() {
 		return "Vehiculo: " + matricula + marca + "Modelo - " + modelo + "Fabricación en " + añoFabricacion + " Combustible - " + combustible + " Plazas - " + plazas + " Precio x día - " + precioDia
 				+ " Estado - " + estado + " Categoria -" + categoria;
-	}
-
-	@Override
-// Calcular el precio total del alquiler multiplicando el precio por día por la cantidad de días
-	public double calcularPrecio(int dias, int precioDia) { 
-		return precioDia * dias;
 	}
 }
