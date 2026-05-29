@@ -1,4 +1,4 @@
-# RuedaFácil - Sistema de Alquiler de Vehículos
+# Sistema de Alquiler de Vehículos
 ## Estructura del Proyecto
 ```plaintext
 RuedaFacil
