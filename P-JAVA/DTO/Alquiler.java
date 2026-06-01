@@ -1,17 +1,20 @@
 package DTO;
-import java.util.Date;
+
+import java.time.LocalDate;
 
 public class Alquiler {
 	private int idAlquiler;
 	private int idEmpleado;
-	private int idCliente;
-	private Date fechaInicio;
-	private Date fechaPrevistaDevolucion;
-	private Date fechaRealDevolucion;
-	private EstadoContrato estadoContrato;
+	private String idCliente;
+	private LocalDate fechaInicio;
+	private LocalDate fechaPrevistaDevolucion;
+	private LocalDate fechaRealDevolucion;
+	private String estadoContrato;
 	private double precioTotal;
-		
-	public Alquiler(int idAlquiler, int idEmpleado, int idCliente, Date fechaInicio, Date fechaPrevistaDevolucion, Date fechaRealDevolucion, EstadoContrato estadoContrato, double precioTotal) {
+
+	public Alquiler(int idAlquiler, int idEmpleado, String idCliente, LocalDate fechaInicio,
+			LocalDate fechaPrevistaDevolucion,
+			LocalDate fechaRealDevolucion, String estadoContrato, double precioTotal) {
 		this.idAlquiler = idAlquiler;
 		this.idEmpleado = idEmpleado;
 		this.idCliente = idCliente;
@@ -21,66 +24,78 @@ public class Alquiler {
 		this.estadoContrato = estadoContrato;
 		this.precioTotal = precioTotal;
 	}
-	
+
+	// Constructor para crear nuevos alquileres
 	public Alquiler() {
 	}
 
 	public int getIdAlquiler() {
 		return idAlquiler;
 	}
+
 	public void setIdAlquiler(int idAlquiler) {
 		this.idAlquiler = idAlquiler;
 	}
+
 	public int getIdEmpleado() {
 		return idEmpleado;
 	}
+
 	public void setIdEmpleado(int idEmpleado) {
 		this.idEmpleado = idEmpleado;
 	}
-	public int getIdCliente() {
+
+	public String getIdCliente() {
 		return idCliente;
 	}
-	public void setIdCliente(int idCliente) {
+
+	public void setIdCliente(String idCliente) {
 		this.idCliente = idCliente;
 	}
-	public Date getFechaInicio() {
+
+	public LocalDate getFechaInicio() {
 		return fechaInicio;
 	}
-	public void setFechaInicio(Date fechaInicio) {
-		this.fechaInicio = fechaInicio;
+
+	public void setFechaInicio(LocalDate localDate) {
+		this.fechaInicio = localDate;
 	}
-	public Date getFechaPrevistaDevolucion() {
+
+	public LocalDate getFechaPrevistaDevolucion() {
 		return fechaPrevistaDevolucion;
 	}
-	public void setFechaPrevistaDevolucion(Date fechaPrevistaDevolucion) {
+
+	public void setFechaPrevistaDevolucion(LocalDate fechaPrevistaDevolucion) {
 		this.fechaPrevistaDevolucion = fechaPrevistaDevolucion;
 	}
-	public Date getFechaRealDevolucion() {
+
+	public LocalDate getFechaRealDevolucion() {
 		return fechaRealDevolucion;
 	}
-	public void setFechaRealDevolucion(Date fechaRealDevolucion) {
+
+	public void setFechaRealDevolucion(LocalDate fechaRealDevolucion) {
 		this.fechaRealDevolucion = fechaRealDevolucion;
 	}
-	public EstadoContrato getEstadoContrato() {
+
+	public String getEstadoContrato() {
 		return estadoContrato;
 	}
-	public void setEstadoContrato(EstadoContrato estadoContrato) {
+
+	public void setEstadoContrato(String estadoContrato) {
 		this.estadoContrato = estadoContrato;
 	}
+
 	public double getPrecioTotal() {
 		return precioTotal;
 	}
+
 	public void setPrecioTotal(double precioTotal) {
 		this.precioTotal = precioTotal;
 	}
 
 	@Override
 	public String toString() {
-		return "Alquiler - " + idAlquiler + " Fecha Inicio :" + fechaInicio + " Fecha Prevista Devolucion: " + fechaPrevistaDevolucion + " Fecha Real: " + fechaRealDevolucion + " Estado: " + estadoContrato + " Precio Total: " + precioTotal + " Id Empleado: " + idEmpleado + " Id Cliente: " + idCliente;
-	}
-	
-	// Calcular precio total del alquiler multiplicando el precio por día por la cantidad de días
-	public double calcularPrecioTotal(int dias, double precioDia) {
-		return precioTotal = dias * precioDia;
+		return "Alquiler - " + idAlquiler + " Fecha Inicio :" + fechaInicio + " Fecha Prevista Devolucion: " + fechaPrevistaDevolucion + " Fecha Real: " + fechaRealDevolucion + " Estado: " + estadoContrato
+				+ " Precio Total: " + precioTotal + " Id Empleado: " + idEmpleado + " Id Cliente: " + idCliente;
 	}
 }
