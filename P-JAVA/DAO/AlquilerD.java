@@ -1,86 +1,127 @@
 package DAO;
+
+import DTO.Alquiler;
+import DTO.ClienteNoEncontradoException;
+import DTO.VehiculoNoDisponibleException;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
-import DTO.Alquiler;
+import src.ConexionBD;
 
 public class AlquilerD {
-	// HashMap para almacenar alquileres con su ID como clave
-	public static HashMap<Integer, Alquiler> alquileres = new HashMap<>();
-	
-// CRUD COMPLETO
-	public static void crearAlquiler(Alquiler alquiler) {
-		alquileres.put(alquiler.getIdAlquiler(), alquiler); // En el HashMap
-		System.out.println("Alquiler creado: ID " + alquiler.getIdAlquiler() + 
-		                   " | Empleado: " + alquiler.getIdEmpleado() + 
-		                   " | Cliente: " + alquiler.getIdCliente() + 
-		                   " | Fecha inicio: " + alquiler.getFechaInicio());
-	}
-	
-	public static void actualizarAlquiler(Alquiler alquiler) {
-		if (alquileres.containsKey(alquiler.getIdAlquiler())) { // Si existe en el HashMap
-			alquileres.put(alquiler.getIdAlquiler(), alquiler); // Añade los cambios
-			System.out.println("Alquiler actualizado: ID " + alquiler.getIdAlquiler());
-		} else {
-			System.out.println("Alquiler no encontrado con ID: " + alquiler.getIdAlquiler());
-		}
-	}
+    private Connection getConnection() {
+        return ConexionBD.conectar();
+    }
 
-	public void eliminarAlquiler(int idAlquiler) {
-		Iterator<Integer> iterator = alquileres.keySet().iterator(); // Elimina un alquiler del HashMap de forma segura usando Iterator
-		while (iterator.hasNext()) {
-			Integer id = iterator.next(); // Itera/pasa por la id
-			// Itera a través de las claves del HashMap y elimina la que coincida con el ID
-			if (id.equals(idAlquiler)) {
-				iterator.remove();
-				System.out.println("Alquiler con ID " + idAlquiler + " eliminado.");
-				return;
-			}
-		}
-		System.out.println("Alquiler no encontrado con ID: " + idAlquiler);
-	}
-	
-	// Busca un alquiler específico en el HashMap por su ID, devuelve el alquiler encontrado o null si no existe
-	public static Alquiler buscarPorId(int idAlquiler) {
-		return alquileres.getOrDefault(idAlquiler, null);
-	}
+    // CRUD COMPLETO
+    public void crearAlquiler(Alquiler alquiler) throws ClienteNoEncontradoException, VehiculoNoDisponibleException {
+        // Verificar que el cliente existe
+        ClienteD clienteDAO = new ClienteD();
+        if (clienteDAO.buscarPorDNI(alquiler.getIdCliente()) == null) {
+            throw new ClienteNoEncontradoException("No existe cliente con DNI: " + alquiler.getIdCliente());
+        }
+        String sql = "INSERT INTO Alquiler (fecha_inicio, fecha_devolucion_prevista, id_cliente, id_empleado, matricula, precio_total, estado_contrato) VALUES (?,?,?,?,?,?,?)";
+        try (Connection conn = getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setDate(1, Date.valueOf(alquiler.getFechaInicio()));
+            pstmt.setDate(2, Date.valueOf(alquiler.getFechaPrevistaDevolucion()));
+            pstmt.setString(3, alquiler.getIdCliente()); // DNI como String
+            pstmt.setInt(4, alquiler.getIdEmpleado());
+            pstmt.setDouble(6, alquiler.getPrecioTotal());
+            pstmt.setString(7, alquiler.getEstadoContrato());
+            pstmt.executeUpdate();
+            System.out.println("Alquiler creado correctamente.");
+        } catch (SQLException e) {
+            System.err.println("Error al crear alquiler: " + e.getMessage());
+        }
+    }
 
-	// Lista todos los alquileres almacenados. Convierte los valores del HashMap a un ArrayList
-  	public static List<Alquiler> listarTodos() {
-		List<Alquiler> lista = new ArrayList<>(alquileres.values());
-		return lista;
-	}
+    public void eliminarAlquiler(int idAlquiler) {
+        List<Alquiler> todos = listarTodos();
+        boolean encontrado = false;
+        Iterator<Alquiler> it = todos.iterator();
+        while (it.hasNext()) {
+            if (it.next().getIdAlquiler() == idAlquiler) {
+                encontrado = true;
+                break;
+            }
+        }
+        if (encontrado) {
+            String sql = "DELETE FROM Alquiler WHERE id_alquiler = ?";
+            try (Connection conn = getConnection();
+                    PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setInt(1, idAlquiler);
+                int filas = pstmt.executeUpdate();
+                if (filas > 0)
+                    System.out.println("Alquiler eliminado.");
+                else
+                    System.out.println("No existe alquiler con ese ID.");
+            } catch (SQLException e) {
+                System.err.println("Error al eliminar alquiler: " + e.getMessage());
+            }
+        } else {
+            System.out.println("No existe alquiler con ese ID.");
+        }
+    }
 
-	// Consulta todos los alquileres de un cliente específico usando su DNI. 
-	public static List <Alquiler> consultarPorCliente(String dni) {
-		return alquileres.values().stream()
-			// Encontrar alquileres que coincidan con el DNI
-				.filter(alquiler -> alquiler.getIdCliente() == Integer.parseInt(dni)) // Si coincide con el DNI
-				.collect(Collectors.toList()); // Devuelve una lista de alquileres que coinciden con el DNI del cliente
-		}
+    // LISTA DE ALQUILER
+    public List<Alquiler> listarTodos() {
+        List<Alquiler> lista = new ArrayList<>();
+        String sql = "SELECT * FROM Alquiler";
+        try (Connection conn = getConnection();
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(sql)) {
 
-	// Consulta alquileres dentro de un rango de fechas específico
-	public static List<Alquiler> consultarPorFechas(Date inicio, Date fin) {
-		return alquileres.values().stream()
-			.filter(alquiler -> alquiler.getFechaInicio().compareTo(inicio) >= 0 && alquiler.getFechaInicio().compareTo(fin) <= 0) // Si coincide con las fechas
-			.sorted((a1, a2) -> a1.getFechaInicio().compareTo(a2.getFechaInicio())) // Ordena los resultados por fecha de inicio de menor a mayor
-			.collect(Collectors.toList()); 
-	}
+            while (rs.next()) {
+                Alquiler a = new Alquiler();
+                a.setIdAlquiler(rs.getInt("id_alquiler"));
+                a.setFechaInicio(rs.getDate("fecha_inicio").toLocalDate());
+                a.setFechaPrevistaDevolucion(rs.getDate("fecha_devolucion_prevista").toLocalDate());
+                Date real = rs.getDate("fecha_devolucion_real");
+                if (real != null)
+                a.setFechaRealDevolucion(real.toLocalDate()); // Si está vacia, devuelve la actual por defecto
+                a.setIdCliente(rs.getString("id_cliente"));
+                a.setIdEmpleado(rs.getInt("id_empleado"));
+                a.setPrecioTotal(rs.getDouble("precio_total"));
+                String estadoStr = rs.getString("estado_contrato");
 
-	// Actualiza la información de devolución de un alquiler.
-	public  static void actualizarDevolucion(int idAlquiler, Date fechaReal, Double nuevoPrecio) {
-		// Verifica si el alquiler existe antes de actualizar
-		if (alquileres.containsKey(idAlquiler)) {
-			Alquiler alquiler = alquileres.get(idAlquiler);
-			// Modifica la fecha real de devolución y el precio final
-			alquiler.setFechaRealDevolucion(fechaReal);
-			alquiler.setPrecioTotal(nuevoPrecio);
-			System.out.println("Devolución actualizada: ID " + idAlquiler + " | Fecha devolución: " + fechaReal + " | Precio final: " + nuevoPrecio);
-		} else {
-			System.out.println("Alquiler no encontrado con ID: " + idAlquiler);
-		}
-	}
+				// SI estado esta vacio, se añade a la lista
+				if (estadoStr != null) {
+                    a.setEstadoContrato(estadoStr); 
+                }
+                lista.add(a);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al listar alquileres: " + e.getMessage());
+        }
+        return lista;
+    }
+
+    // LISTA POR ALQUILER ACTIVO
+    public List<Alquiler> listarActivos() {
+        return listarTodos().stream()
+                .filter(a -> a.getEstadoContrato().equalsIgnoreCase("activo")) // Ignora si esta vacio y lo pongo como activo por defecto
+                .collect(Collectors.toList()); // Añadido a lista
+    }
+
+    // LISTA POR CLIENTE (Map)
+    public Map<String, List<Alquiler>> agruparPorCliente() {
+        return listarTodos().stream()
+                .collect(Collectors.groupingBy(Alquiler::getIdCliente)); // Se lista agrupando por la Id de cliente
+    }
+
+    // CONSULTA: Buscar por DNI
+    public List<Alquiler> consultarPorCliente(String dni) {
+        return listarTodos().stream()
+                .filter(a -> a.getIdCliente().equals(dni)) // Busca el dni, y si es igual lo encuentra y añade a la lista
+                .collect(Collectors.toList());
+    }
 }
