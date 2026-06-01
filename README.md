@@ -16,12 +16,10 @@ RuedaFacil
 │
 └── DTO
     ├── Alquiler
-    ├── Cargo (Enum)
     ├── Categoria
     ├── Cliente
     ├── ClienteNoEncontradoException
     ├── Empleado
-    ├── EstadoContrato (Enum)
     ├── Vehiculo
     └── VehiculoNoDisponibleException
 ```
