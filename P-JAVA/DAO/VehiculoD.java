@@ -1,81 +1,138 @@
 package DAO;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import DTO.Categoria;
 import DTO.Vehiculo;
+import java.sql.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import src.ConexionBD;
 
 public class VehiculoD {
-    // Lista en memoria de vehículos
-    private static List<Vehiculo> vehiculos = new ArrayList<>();
+    private Connection getConnection() {
+        return ConexionBD.conectar();
+    }
 
-	// CRUD COMPLETO
+    // CRUD COMPLETO
     public void crearVehiculo(Vehiculo vehiculo) {
-        vehiculos.add(vehiculo); // Añade a la lista
-        System.out.println("Vehículo creado: " + vehiculo.getMatricula());
-    }
-
-    public void actualizarVehiculo(Vehiculo vehActualizado) {
-        for (Vehiculo v : vehiculos) { // Recorre la lista
-            if (v.getMatricula().equals(vehActualizado.getMatricula())) { // Coincidencia por matrícula
-                v.setModelo(vehActualizado.getModelo());
-                v.setPrecioDia(vehActualizado.getPrecioDia());
-                v.setDisponible(vehActualizado.isDisponible());
-                v.setCategoria(vehActualizado.getCategoria());
-                System.out.println("Vehículo actualizado.");
-                return;
-            }
-        }
-        System.out.println("Vehículo no encontrado.");
-    }
-
-    public void eliminarVehiculo(Vehiculo vehiculo) {
-        Iterator<Vehiculo> it = vehiculos.iterator();
-        while (it.hasNext()) {
-            Vehiculo v = it.next();
-            if (v.getMatricula().equals(vehiculo.getMatricula())) { // Coincidencia
-                it.remove(); // Elimina
-                System.out.println("Vehículo eliminado.");
-                return;
-            }
-        }
-        System.out.println("Vehículo no encontrado.");
-    }
-
-    // Buscar vehículo por matrícula
-    public static Vehiculo buscarPorMatricula(String matricula) {
-        for (Vehiculo v : vehiculos) {
-            if (v.getMatricula().equals(matricula)) { // Coincidencia
-                return v;
-            }
-        }
-        return null;
-    }
-
-    // Listar todos los vehículos
-    public static void listarTodos() {
-        if (vehiculos.isEmpty()) { // Si no hay vehículos
-            System.out.println("No hay vehículos registrados.");
-            return;
-        }
-        for (Vehiculo v : vehiculos) {
-            System.out.println(v);
+        String sql = "INSERT INTO Vehiculo (matricula, marca, modelo, ano, combustible, plazas, precio_dia, estado, id_categoria) VALUES (?,?,?,?,?,?,?,?,?)";
+        try (Connection conn = getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, vehiculo.getMatricula());
+            pstmt.setString(2, vehiculo.getMarca());
+            pstmt.setString(3, vehiculo.getModelo());
+            pstmt.setInt(4, vehiculo.getAñoFabricacion());
+            pstmt.setString(5, vehiculo.getCombustible());
+            pstmt.setInt(6, vehiculo.getPlazas());
+            pstmt.setDouble(7, vehiculo.getPrecioDia());
+            pstmt.setString(8, vehiculo.getEstado());
+            pstmt.setString(9, vehiculo.getCategoria());
+            pstmt.executeUpdate();
+            System.out.println("Vehículo añadido con éxito.");
+        } catch (SQLException e) {
+            System.err.println("Error al crear vehículo: " + e.getMessage());
         }
     }
 
-    // Listar vehículos por categoría
-    public static void listarPorCategoria(Categoria categoria) {
+    public void modificarVehiculo(Vehiculo vehiculo) {
+        String sql = "UPDATE Vehiculo SET marca=?, modelo=?, ano=?, combustible=?, plazas=?, precio_dia=?, estado=?, id_categoria=? WHERE matricula=?";
+        try (Connection conn = getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, vehiculo.getMarca());
+            pstmt.setString(2, vehiculo.getModelo());
+            pstmt.setInt(3, vehiculo.getAñoFabricacion());
+            pstmt.setString(4, vehiculo.getCombustible());
+            pstmt.setInt(5, vehiculo.getPlazas());
+            pstmt.setDouble(6, vehiculo.getPrecioDia());
+            pstmt.setString(7, vehiculo.getEstado());
+            pstmt.setString(8, vehiculo.getCategoria());
+            pstmt.setString(9, vehiculo.getMatricula());
+            int filas = pstmt.executeUpdate();
+            if (filas > 0)
+                System.out.println("Vehículo modificado.");
+            else
+                System.out.println("No se encontró vehículo con esa matrícula.");
+        } catch (SQLException e) {
+            System.err.println("Error al modificar vehículo: " + e.getMessage());
+        }
+    }
+
+    public void eliminarVehiculo(String matricula) {
+        List<Vehiculo> todos = listarTodos();
         boolean encontrado = false;
-        for (Vehiculo v : vehiculos) {
-            if (v.getCategoria().getIdCategoria() == categoria.getIdCategoria()) { // Coincidencia por categoría
-                System.out.println(v);
+        Iterator<Vehiculo> it = todos.iterator();
+        while (it.hasNext()) {
+            if (it.next().getMatricula().equals(matricula)) {
                 encontrado = true;
+                break;
             }
         }
-        if (!encontrado) {
-            System.out.println("No hay vehículos en esta categoría.");
+        if (encontrado) {
+            String sql = "DELETE FROM Vehiculo WHERE matricula = ?";
+            try (Connection conn = getConnection();
+                    PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setString(1, matricula);
+                int filas = pstmt.executeUpdate();
+                if (filas > 0)
+                    System.out.println("Vehículo eliminado.");
+            } catch (SQLException e) {
+                System.err.println("Error al eliminar vehículo: " + e.getMessage());
+            }
+        } else {
+            System.out.println("No existe vehículo con esa matrícula.");
         }
+    }
+
+    // LISTAR TODOS
+    public List<Vehiculo> listarTodos() {
+        List<Vehiculo> lista = new ArrayList<>();
+        String sql = "SELECT * FROM Vehiculo";
+        try (Connection conn = getConnection();
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(sql)) {
+            while (rs.next()) {
+                Vehiculo v = new Vehiculo();
+                v.setMatricula(rs.getString("matricula"));
+                v.setMarca(rs.getString("marca"));
+                v.setModelo(rs.getString("modelo"));
+                v.setAñoFabricacion(rs.getInt("ano"));
+                v.setCombustible(rs.getString("combustible"));
+                v.setPlazas(rs.getInt("plazas"));
+                v.setPrecioDia(rs.getDouble("precio_dia"));
+                v.setEstado(rs.getString("estado"));
+                v.setCategoria(rs.getString("id_categoria"));
+                lista.add(v);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al listar vehículos: " + e.getMessage());
+        }
+        return lista;
+    }
+
+    // LISTAR POR DISPONIBILIDAD
+    public List<Vehiculo> listarDisponibles() {
+        return listarTodos().stream()
+                .filter(v -> "disponible".equalsIgnoreCase(v.getEstado()))
+                .collect(Collectors.toList());
+    }
+
+    // LISTA DISPONIBLE POR CATEGORIA
+    public List<Vehiculo> listarDisponiblesPorCategoria(String idCategoria) {
+        return listarTodos().stream()
+                .filter(v -> "disponible".equalsIgnoreCase(v.getEstado())) // Busca por "disponible" en la base de datos
+                .filter(v -> v.getCategoria().equals(idCategoria)) // Filtra por id al leerlo
+                .collect(Collectors.toList()); // Añade a la lista
+    }
+
+    // LISTA POR CATEGORIA (con Map)
+    public Map<String, List<Vehiculo>> agruparPorCategoria() {
+        return listarTodos().stream()
+                .collect(Collectors.groupingBy(Vehiculo::getCategoria)); 
+    }
+
+    // CONSULTA: Buscar por matrícula
+    public Vehiculo buscarPorMatricula(String matricula) {
+        return listarTodos().stream()
+                .filter(v -> v.getMatricula().equals(matricula))
+                .findFirst() 
+                .orElse(null);
     }
 }
