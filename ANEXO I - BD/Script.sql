@@ -48,7 +48,6 @@ CREATE TABLE Alquiler (
     FOREIGN KEY (matricula) REFERENCES Vehiculo(matricula)
 );
 
--- INSERT 
 INSERT INTO Categoria (nombre_categoria) VALUES
 ('turismo'),
 ('furgoneta'),
