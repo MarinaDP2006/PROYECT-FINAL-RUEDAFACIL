@@ -29,8 +29,7 @@ public class CategoriaD {
                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, categoria.getNombre());
             pstmt.setInt(2, categoria.getIdCategoria());
-			
-            int filas = pstmt.executeUpdate(); // Actualiza las filas de categoria con los datos de nombre e id
+            int filas = pstmt.executeUpdate();
             if (filas > 0)
                 System.out.println("categoría modificada.");
             else
@@ -43,7 +42,7 @@ public class CategoriaD {
     public void eliminarCategoria(int idCategoria) {
         List<Categoria> todos = listarTodas();
         boolean encontrado = false;
-        Iterator<Categoria> it = todos.iterator(); 
+        Iterator<Categoria> it = todos.iterator();
         while (it.hasNext()) {
             if (it.next().getIdCategoria() == idCategoria) {
                 encontrado = true;
@@ -53,19 +52,18 @@ public class CategoriaD {
         if (encontrado) {
             String sql = "DELETE FROM Categoria WHERE id_categoria = ?";
             try (Connection conn = getConnection();
-                    PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                	pstmt.setInt(1, idCategoria);
-				
-                int filas = pstmt.executeUpdate(); // // Actualiza las filas de categoria con los datos de nombre e id
-              	  if (filas > 0)
-              	      System.out.println("categoría eliminada.");
-             	   else
-             	       System.out.println("no existe categoría con ese id.");
-         	   } catch (SQLException e) {
-         	       System.err.println("error al eliminar categoría: " + e.getMessage());
-        	    }
-      		  } else {
-       		     System.out.println("no existe categoría con ese id.");
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setInt(1, idCategoria);
+                int filas = pstmt.executeUpdate();
+                if (filas > 0) // Recorrer por fila de tabla en BD
+                    System.out.println("categoría eliminada.");
+                else
+                    System.out.println("no existe categoría con ese id.");
+            } catch (SQLException e) {
+                System.err.println("error al eliminar categoría: " + e.getMessage());
+            }
+        } else {
+            System.out.println("no existe categoría con ese id.");
         }
     }
 
@@ -88,7 +86,7 @@ public class CategoriaD {
         return lista;
     }
 
-    // CONSULTA: Buscar pod ID
+    // CONSULTA: Buscar por ID
     public Categoria buscarPorId(int idCategoria) {
         String sql = "SELECT * FROM Categoria WHERE id_categoria = ?";
         try (Connection conn = getConnection();

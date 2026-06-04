@@ -33,8 +33,9 @@ public class AlquilerD {
                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setDate(1, Date.valueOf(alquiler.getFechaInicio()));
             pstmt.setDate(2, Date.valueOf(alquiler.getFechaPrevistaDevolucion()));
-            pstmt.setString(3, alquiler.getIdCliente()); // DNI como String
+            pstmt.setString(3, alquiler.getIdCliente());
             pstmt.setInt(4, alquiler.getIdEmpleado());
+            pstmt.setString(5, alquiler.getMatricula());
             pstmt.setDouble(6, alquiler.getPrecioTotal());
             pstmt.setString(7, alquiler.getEstadoContrato());
             pstmt.executeUpdate();
@@ -60,7 +61,7 @@ public class AlquilerD {
                     PreparedStatement pstmt = conn.prepareStatement(sql)) {
                 pstmt.setInt(1, idAlquiler);
                 int filas = pstmt.executeUpdate();
-                if (filas > 0)
+                if (filas > 0) // Recorrer por fila de tabla en BD
                     System.out.println("Alquiler eliminado.");
                 else
                     System.out.println("No existe alquiler con ese ID.");
@@ -86,16 +87,17 @@ public class AlquilerD {
                 a.setFechaInicio(rs.getDate("fecha_inicio").toLocalDate());
                 a.setFechaPrevistaDevolucion(rs.getDate("fecha_devolucion_prevista").toLocalDate());
                 Date real = rs.getDate("fecha_devolucion_real");
+          
                 if (real != null)
-                a.setFechaRealDevolucion(real.toLocalDate()); // Si está vacia, devuelve la actual por defecto
+                    a.setFechaRealDevolucion(real.toLocalDate());
                 a.setIdCliente(rs.getString("id_cliente"));
                 a.setIdEmpleado(rs.getInt("id_empleado"));
+                a.setMatricula(rs.getString("matricula"));
                 a.setPrecioTotal(rs.getDouble("precio_total"));
-                String estadoStr = rs.getString("estado_contrato");
 
-				// SI estado esta vacio, se añade a la lista
-				if (estadoStr != null) {
-                    a.setEstadoContrato(estadoStr); 
+                String estadoStr = rs.getString("estado_contrato");
+                if (estadoStr != null) {
+                    a.setEstadoContrato(estadoStr);
                 }
                 lista.add(a);
             }
@@ -108,20 +110,20 @@ public class AlquilerD {
     // LISTA POR ALQUILER ACTIVO
     public List<Alquiler> listarActivos() {
         return listarTodos().stream()
-                .filter(a -> a.getEstadoContrato().equalsIgnoreCase("activo")) // Ignora si esta vacio y lo pongo como activo por defecto
-                .collect(Collectors.toList()); // Añadido a lista
+                .filter(a -> a.getEstadoContrato().equalsIgnoreCase("activo"))
+                .collect(Collectors.toList());
     }
 
     // LISTA POR CLIENTE (Map)
     public Map<String, List<Alquiler>> agruparPorCliente() {
         return listarTodos().stream()
-                .collect(Collectors.groupingBy(Alquiler::getIdCliente)); // Se lista agrupando por la Id de cliente
+                .collect(Collectors.groupingBy(Alquiler::getIdCliente));
     }
 
     // CONSULTA: Buscar por DNI
     public List<Alquiler> consultarPorCliente(String dni) {
         return listarTodos().stream()
-                .filter(a -> a.getIdCliente().equals(dni)) // Busca el dni, y si es igual lo encuentra y añade a la lista
+                .filter(a -> a.getIdCliente().equals(dni))
                 .collect(Collectors.toList());
     }
 }

@@ -16,7 +16,7 @@ public class EmpleadoD {
         try (Connection conn = getConnection();
                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, empleado.getNombre());
-            pstmt.setString(2, empleado.getCargo()); 
+            pstmt.setString(2, empleado.getCargo()); // ENUM
             pstmt.setString(3, empleado.getOficina());
             pstmt.setString(4, empleado.getTurno());
             pstmt.setInt(5, empleado.getAñosExp());
@@ -32,7 +32,7 @@ public class EmpleadoD {
         try (Connection conn = getConnection();
                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, empleado.getNombre());
-            pstmt.setString(2, empleado.getCargo()); 
+            pstmt.setString(2, empleado.getCargo());
             pstmt.setString(3, empleado.getOficina());
             pstmt.setString(4, empleado.getTurno());
             pstmt.setInt(5, empleado.getAñosExp());
@@ -63,7 +63,7 @@ public class EmpleadoD {
                     PreparedStatement pstmt = conn.prepareStatement(sql)) {
                 pstmt.setInt(1, idEmpleado);
                 int filas = pstmt.executeUpdate();
-                if (filas > 0)
+                if (filas > 0) // Recorrer por fila de tabla en BD
                     System.out.println("empleado eliminado.");
                 else
                     System.out.println("no existe empleado con ese id.");
@@ -86,7 +86,7 @@ public class EmpleadoD {
                 Empleado e = new Empleado();
                 e.setIdEmpleado(rs.getInt("id_empleado"));
                 e.setNombre(rs.getString("nombre"));
-                e.setCargo(rs.getString("cargo"));
+                e.setCargo(rs.getString("cargo")); // ENUM
                 e.setOficina(rs.getString("oficina"));
                 e.setTurno(rs.getString("turno"));
                 e.setAñosExp(rs.getInt("anos_experiencia"));
@@ -109,7 +109,7 @@ public class EmpleadoD {
                 Empleado e = new Empleado();
                 e.setIdEmpleado(rs.getInt("id_empleado"));
                 e.setNombre(rs.getString("nombre"));
-                e.setCargo(rs.getString("cargo")); 
+                e.setCargo(rs.getString("cargo")); // ENUM
                 e.setOficina(rs.getString("oficina"));
                 e.setTurno(rs.getString("turno"));
                 e.setAñosExp(rs.getInt("anos_experiencia"));

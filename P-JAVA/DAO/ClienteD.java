@@ -12,31 +12,33 @@ public class ClienteD {
 
     // CRUD COMPLETO
     public void crearCliente(Cliente cliente) {
-        String sql = "INSERT INTO Cliente (dni, nombre, telefono, email, num_carnet) VALUES (?,?,?,?,?)";
+        String sql = "INSERT INTO Cliente (dni, nombre, telefono, email, direccion, num_carnet) VALUES (?,?,?,?,?,?)";
         try (Connection conn = getConnection();
                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                pstmt.setString(1, cliente.getDni());
-                pstmt.setString(2, cliente.getNombre());
-                pstmt.setString(3, cliente.getTelefono());
-                pstmt.setString(4, cliente.getCorreo());
-                pstmt.setString(5, cliente.getCarnetConducir());
-                pstmt.executeUpdate();
-             System.out.println("Cliente añadido con éxito a la base de datos.");
+            pstmt.setString(1, cliente.getDni());
+            pstmt.setString(2, cliente.getNombre());
+            pstmt.setString(3, cliente.getTelefono());
+            pstmt.setString(4, cliente.getCorreo());
+            pstmt.setString(5, cliente.getDireccion());
+            pstmt.setString(6, cliente.getCarnetConducir());
+            pstmt.executeUpdate();
+            System.out.println("Cliente añadido con éxito a la base de datos.");
         } catch (SQLException e) {
             System.err.println("Error al crear cliente: " + e.getMessage());
         }
     }
 
     public void modificarCliente(Cliente clienteActualizado) {
-        String sql = "UPDATE Cliente SET nombre=?, telefono=?, email=?, num_carnet=? WHERE dni=?";
+        String sql = "UPDATE Cliente SET nombre=?, telefono=?, email=?, direccion=?, num_carnet=? WHERE dni=?";
         try (Connection conn = getConnection();
-                PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                pstmt.setString(1, clienteActualizado.getNombre());
-                pstmt.setString(2, clienteActualizado.getTelefono());
-                   pstmt.setString(3, clienteActualizado.getCorreo());
-                pstmt.setString(4, clienteActualizado.getCarnetConducir());
-                pstmt.setString(5, clienteActualizado.getDni());
-            int filas = pstmt.executeUpdate(); // Actualiza las filas de la tabla cliente
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, clienteActualizado.getNombre());
+            pstmt.setString(2, clienteActualizado.getTelefono());
+            pstmt.setString(3, clienteActualizado.getCorreo());        	
+            pstmt.setString(4, clienteActualizado.getDireccion());
+            pstmt.setString(5, clienteActualizado.getCarnetConducir());
+            pstmt.setString(6, clienteActualizado.getDni());
+            int filas = pstmt.executeUpdate();
             if (filas > 0)
                 System.out.println("Cliente modificado correctamente.");
             else
@@ -56,7 +58,7 @@ public class ClienteD {
                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, dni);
             int filas = pstmt.executeUpdate();
-            if (filas > 0)
+            if (filas > 0) // Recorrer por fila de tabla en BD
                 System.out.println("Cliente eliminado.");
         } catch (SQLException e) {
             System.err.println("Error al eliminar cliente: " + e.getMessage());
@@ -76,6 +78,7 @@ public class ClienteD {
                 c.setNombre(rs.getString("nombre"));
                 c.setTelefono(rs.getString("telefono"));
                 c.setCorreo(rs.getString("email"));
+                c.setDireccion(rs.getString("direccion"));
                 c.setCarnetConducir(rs.getString("num_carnet"));
                 lista.add(c);
             }
@@ -98,6 +101,7 @@ public class ClienteD {
                 c.setNombre(rs.getString("nombre"));
                 c.setTelefono(rs.getString("telefono"));
                 c.setCorreo(rs.getString("email"));
+                c.setDireccion(rs.getString("direccion"));
                 c.setCarnetConducir(rs.getString("num_carnet"));
                 return c;
             }

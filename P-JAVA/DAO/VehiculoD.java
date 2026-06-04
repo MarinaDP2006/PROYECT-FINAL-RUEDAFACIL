@@ -71,7 +71,7 @@ public class VehiculoD {
                     PreparedStatement pstmt = conn.prepareStatement(sql)) {
                 pstmt.setString(1, matricula);
                 int filas = pstmt.executeUpdate();
-                if (filas > 0)
+                if (filas > 0) // Recorrer por fila de tabla en BD
                     System.out.println("Vehículo eliminado.");
             } catch (SQLException e) {
                 System.err.println("Error al eliminar vehículo: " + e.getMessage());
@@ -117,22 +117,22 @@ public class VehiculoD {
     // LISTA DISPONIBLE POR CATEGORIA
     public List<Vehiculo> listarDisponiblesPorCategoria(String idCategoria) {
         return listarTodos().stream()
-                .filter(v -> "disponible".equalsIgnoreCase(v.getEstado())) // Busca por "disponible" en la base de datos
-                .filter(v -> v.getCategoria().equals(idCategoria)) // Filtra por id al leerlo
-                .collect(Collectors.toList()); // Añade a la lista
+                .filter(v -> "disponible".equalsIgnoreCase(v.getEstado()))
+                .filter(v -> v.getCategoria().equals(idCategoria))
+                .collect(Collectors.toList());
     }
 
     // LISTA POR CATEGORIA (con Map)
     public Map<String, List<Vehiculo>> agruparPorCategoria() {
         return listarTodos().stream()
-                .collect(Collectors.groupingBy(Vehiculo::getCategoria)); 
+                .collect(Collectors.groupingBy(Vehiculo::getCategoria));
     }
 
     // CONSULTA: Buscar por matrícula
     public Vehiculo buscarPorMatricula(String matricula) {
         return listarTodos().stream()
                 .filter(v -> v.getMatricula().equals(matricula))
-                .findFirst() 
+                .findFirst()
                 .orElse(null);
     }
 }
