@@ -11,7 +11,8 @@ public class Vehiculo {
 	private String estado;
 	private String categoria;
 
-	public Vehiculo(String matricula, String marca, String modelo, int añoFabricacion, String combustible, int plazas,	double precioDia, String estado, String categoria) {
+	public Vehiculo(String matricula, String marca, String modelo, int añoFabricacion, String combustible, int plazas,
+			double precioDia, String estado, String categoria) {
 		this.matricula = matricula;
 		this.marca = marca;
 		this.modelo = modelo;
@@ -100,7 +101,8 @@ public class Vehiculo {
 	}
 
 	public String toString() {
-		return "Vehiculo: " + matricula + marca + "Modelo - " + modelo + "Fabricación en " + añoFabricacion	+ " Combustible - " + combustible + " Plazas - " + plazas + " Precio x día - " + precioDia
+		return "Vehiculo: " + matricula + "Marca - " + marca + "Modelo - " + modelo + "Fabricación en " + añoFabricacion
+				+ " Combustible - " + combustible + " Plazas - " + plazas + " Precio x día - " + precioDia
 				+ " Estado - " + estado + " Categoria -" + categoria;
 	}
 }

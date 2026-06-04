@@ -70,6 +70,7 @@ public class Empleado {
 
 	@Override
 	public String toString() {
-		return "Empleado - ID: " + idEmpleado + " Nombre: " + nombre + " Cargo: " + cargo + " Oficina: " + oficina + " Turno: " + turno + " Años de Experiencia: " + añosExp;
+		return "Empleado - ID: " + idEmpleado + " Nombre: " + nombre + " Cargo: " + cargo + " Oficina: " + oficina
+				+ " Turno: " + turno + " Años de Experiencia: " + añosExp;
 	}
 }

@@ -5,19 +5,21 @@ public class Cliente {
 	private String nombre;
 	private String correo;
 	private String telefono;
+	private String direccion;
 	private String carnetConducir;
 	
-	public Cliente(String dni, String nombre, String correo, String telefono, String carnetConducir) {
+	public Cliente(String dni, String nombre, String correo, String telefono, String direccion, String carnetConducir) {
 		this.dni = dni;
 		this.nombre = nombre;
 		this.correo = correo;
 		this.telefono = telefono;
+		this.direccion = direccion;
 		this.carnetConducir = carnetConducir;
 	}
 
 	public Cliente() {
 	}
-
+	
 	public String getDni() {
 		return dni;
 	}
@@ -42,15 +44,21 @@ public class Cliente {
 	public void setTelefono(String telefono) {
 		this.telefono = telefono;
 	}
+	public String getDireccion() {
+		return direccion;
+	}
+	public void setDireccion(String direccion) {
+		this.direccion = direccion;
+	}
 	public String getCarnetConducir() {
 		return carnetConducir;
 	}
 	public void setCarnetConducir(String carnetConducir) {
 		this.carnetConducir = carnetConducir;
 	}
-	
+
 	@Override
 	public String toString() {
-		return "Cliente: DNI - " + dni + " Nombre - " + nombre + " Correo - " + correo + " Telefono - " + telefono + " Carnet de Conducir - " + carnetConducir;
+		return "Cliente: DNI - " + dni + " Nombre - " + nombre + " Telefono - " + telefono +  " Correo - " + correo +  "Direccion - " + direccion + " Carnet de Conducir - " + carnetConducir;
 	}
 }

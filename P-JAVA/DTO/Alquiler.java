@@ -9,12 +9,12 @@ public class Alquiler {
 	private LocalDate fechaInicio;
 	private LocalDate fechaPrevistaDevolucion;
 	private LocalDate fechaRealDevolucion;
-	private String estadoContrato;
+	private String matricula;
 	private double precioTotal;
+    private String estadoContrato;
 
 	public Alquiler(int idAlquiler, int idEmpleado, String idCliente, LocalDate fechaInicio,
-			LocalDate fechaPrevistaDevolucion,
-			LocalDate fechaRealDevolucion, String estadoContrato, double precioTotal) {
+			LocalDate fechaPrevistaDevolucion, LocalDate fechaRealDevolucion, String matricula, String estadoContrato, double precioTotal) {
 		this.idAlquiler = idAlquiler;
 		this.idEmpleado = idEmpleado;
 		this.idCliente = idCliente;
@@ -77,6 +77,14 @@ public class Alquiler {
 		this.fechaRealDevolucion = fechaRealDevolucion;
 	}
 
+	public String getMatricula() {
+		return matricula;
+	}
+
+	public void setMatricula(String matricula) {
+		this.matricula = matricula;
+	}
+
 	public String getEstadoContrato() {
 		return estadoContrato;
 	}
@@ -95,7 +103,8 @@ public class Alquiler {
 
 	@Override
 	public String toString() {
-		return "Alquiler - " + idAlquiler + " Fecha Inicio :" + fechaInicio + " Fecha Prevista Devolucion: " + fechaPrevistaDevolucion + " Fecha Real: " + fechaRealDevolucion + " Estado: " + estadoContrato
-				+ " Precio Total: " + precioTotal + " Id Empleado: " + idEmpleado + " Id Cliente: " + idCliente;
+		return "Alquiler - " + idAlquiler + " Fecha Inicio :" + fechaInicio + " Fecha Prevista Devolucion: "
+				+ fechaPrevistaDevolucion + " Fecha Real: " + fechaRealDevolucion + " Estado: " + estadoContrato
+				+ " Precio Total: " + precioTotal + " Matricula: " + matricula + " Id Empleado: " + idEmpleado + " Id Cliente: " + idCliente;
 	}
 }
