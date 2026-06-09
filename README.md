@@ -1,7 +1,7 @@
 # Sistema de Alquiler de Vehículos
 ## Estructura del Proyecto
 ```plaintext
-RuedaFacil
+gestionAlquiler
 │
 ├── src
 │   ├── App_Main
